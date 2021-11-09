@@ -1,4 +1,4 @@
-create table vaccination_certificate (certificate_id int , level varchar(50) );
+create table vaccination_certificate (certificate_id int primary key, level varchar(50) );
 insert into vaccination_certificate values
 (860753 ,'First Dose'),
 (127381 ,'Second Dose'),

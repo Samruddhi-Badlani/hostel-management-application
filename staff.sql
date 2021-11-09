@@ -1,4 +1,5 @@
-create table staff(staff_name varchar(30) not null,
+create table staff(staff_id serial primary key,
+	               staff_name varchar(30) not null,
                    contact_number varchar(20),
                    gender varchar(10),
                    salary int,
@@ -7,7 +8,9 @@ create table staff(staff_name varchar(30) not null,
                    on update cascade on delete set null
                   );
 
-insert into staff values 
+insert into 
+staff(staff_name,contact_number,gender,salary,dept_id) 
+values 
 ('Rishabh Dubey','93409xxxxx','Male',500000,2),
 ('Reena Mehta','93403xxxxx','Female',500000,3),
 ('Samyak Patil','93401xxxxx','Male',400000,2),
@@ -23,10 +26,3 @@ insert into staff values
 ('Aparna Pandit','93111xxxxx','Female',100000,11),
 ('Rishabh Tripathi','90000xxxxx','Male',400000,12);
 select * from staff ;
-
-
-
-
-
-
-
