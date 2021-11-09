@@ -1,14 +1,14 @@
 create table staff(staff_id serial primary key,
-	               staff_name varchar(30) not null,
+	           staff_name varchar(30) not null,
                    contact_number varchar(20),
                    gender varchar(10),
                    salary int,
                    dept_id int 
-				   references department(dept_id)
+		   references department(dept_id)
                    on update cascade on delete set null,
-				   hostel_id int 
-				   references hostel(hostel_id)
-				   on update cascade on delete set null
+		   hostel_id int 
+		   references hostel(hostel_id)
+		   on update cascade on delete set null
                   );
 
 insert into 
