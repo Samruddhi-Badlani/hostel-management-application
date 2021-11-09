@@ -1,4 +1,4 @@
-DROP TABLE IF EXISTS mess;
+
 CREATE TABLE mess (
 	mess_id SERIAL PRIMARY KEY,
 	mess_name VARCHAR(1000),
@@ -14,8 +14,8 @@ VALUES
 ('Freehand Mess ',1),
 ('Amity Mess',2),
 ('Hom Cooking Mess',2),
-('Dulce Dream',3),
-('Art Gallery Mess',3),
-('The Farm Mess',4),
-('BlaBla Mess',4);
+('Dulce Dream',1),
+('Art Gallery Mess',1),
+('The Farm Mess',2),
+('BlaBla Mess',2);
 SELECT * FROM mess;
