@@ -1,4 +1,4 @@
-DROP TABLE IF EXISTS Administrator;
+DROP TABLE IF EXISTS administrator;
 
 CREATE TABLE administrator (
   admin_id SERIAL PRIMARY KEY,
