@@ -9,8 +9,8 @@ CREATE TABLE administrator (
   salary varchar(255)
 );	
 
-INSERT INTO Administrator (Fname, Lname, phone_no, address, salary)VALUES
+INSERT INTO administrator (Fname, Lname, phone_no, address, salary)VALUES
 ('Surekar','Sharma','9685296741',NULL,30000),
 ('Anandita','Bose','8569478562',NULL,50000);
  
-select * from Administrator;
+select * from administrator;
