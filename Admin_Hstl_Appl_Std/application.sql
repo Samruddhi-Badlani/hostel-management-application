@@ -1,6 +1,6 @@
-DROP TABLE IF EXISTS Application;
+DROP TABLE IF EXISTS application;
 
-CREATE TABLE Application (
+CREATE TABLE application (
   application_id SERIAL PRIMARY KEY,
   student_id varchar(255) NOT NULL,
   room_no int DEFAULT NULL,
@@ -12,7 +12,7 @@ CREATE TABLE Application (
 );
 
 
-INSERT INTO Application (student_id,room_no) values
+INSERT INTO application (student_id,room_no) values
 ('0801CS11',1),
 ('0801CS12',1),
 ('0801CS13',2),
@@ -20,5 +20,5 @@ INSERT INTO Application (student_id,room_no) values
 ('0801CS15',2);
 
 
-select * from Application
+select * from application
 
