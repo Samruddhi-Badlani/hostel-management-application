@@ -7,7 +7,9 @@ CREATE TABLE application (
   FOREIGN KEY (student_id) 
   REFERENCES student(student_id)
   ON DELETE SET NULL
-  ON UPDATE CASCADE
+  ON UPDATE CASCADE,
+  FOREIGN KEY (room_no) 
+  REFERENCES room(room_id)
  
 );
 
