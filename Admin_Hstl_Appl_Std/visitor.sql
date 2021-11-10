@@ -6,7 +6,7 @@ CREATE TABLE visitor(
   OUT_date timestamp,
   IN_date timestamp,
   student_id int 
-  references Student(student_id)
+  references student(student_id)
   on update cascade
   on delete set null
   );
