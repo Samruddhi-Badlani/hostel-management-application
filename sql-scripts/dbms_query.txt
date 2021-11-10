@@ -1,0 +1,47 @@
+DROP TABLE IF EXISTS solves;
+CREATE TABLE solves(
+	Query_ID SERIAL,
+	Staff_ID int,
+	No_hours int,
+	PRIMARY KEY(Query_ID,Staff_ID),
+	FORIGN KEY(Staff_ID) 
+	  REFERENCES Warden(Staff_ID)
+	ON DELETE CASCADE
+	ON UPDATE CASCADE
+	)
+INSERT INTO solves(Staff_ID,No_hours) VALUES
+(2,5),
+(1,4);
+select * from solves;
+
+
+DROP TABLE IF EXISTS complaints;
+CREATE TABLE complaints(
+	Query_ID int,
+	student_id int,
+	PRIMARY KEY(Query_ID,student_id),
+	FORIGN KEY(student_id) 
+	  REFERENCES student(student_id)
+	FORIGN KEY(Query_ID) 
+	  REFERENCES Query_Counter(Query_ID)
+	)
+INSERT INTO complaints(Query_ID,student_id) VALUES
+(2,456),
+(3,234);
+select * from complaints;
+
+
+DROP TABLE IF EXISTS Warden;
+CREATE TABLE Warden(
+	Staff_ID int PRIMARY KEY
+	PRIMARY KEY(Staff_ID),
+	FORIGN KEY(Staff_ID) 
+	  REFERENCES STAFF(Staff_ID)
+	ON DELETE CASCADE
+	ON UPDATE CASCADE
+	)
+INSERT INTO Warden(Staff_ID) VALUES
+(2),
+(3);
+select * from Warden;
+	
