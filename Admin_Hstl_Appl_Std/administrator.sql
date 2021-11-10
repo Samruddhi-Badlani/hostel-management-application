@@ -1,6 +1,6 @@
-DROP TABLE IF EXISTS Administration;
+DROP TABLE IF EXISTS Administrator;
 
-CREATE TABLE Administration (
+CREATE TABLE Administrator (
   admin_id SERIAL PRIMARY KEY,
   Fname varchar(255),
   Lname varchar(255),
@@ -9,8 +9,8 @@ CREATE TABLE Administration (
   salary varchar(255)
 );	
 
-INSERT INTO Administration (Fname, Lname, phone_no, address, salary)VALUES
+INSERT INTO Administrator (Fname, Lname, phone_no, address, salary)VALUES
 ('Surekar','Sharma','9685296741',NULL,30000),
 ('Anandita','Bose','8569478562',NULL,50000);
  
-select * from Administration;
+select * from Administrator;
