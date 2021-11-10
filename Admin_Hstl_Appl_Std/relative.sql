@@ -7,7 +7,7 @@ CREATE TABLE relative(
   phone_no varchar(255),
   address varchar(255),
   student_id int
-  references Student(student_id)
+  references student(student_id)
   on update cascade
   on delete cascade
   );
