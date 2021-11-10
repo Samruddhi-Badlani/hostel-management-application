@@ -1,6 +1,6 @@
 DROP TABLE IF EXISTS Administrator;
 
-CREATE TABLE Administrator (
+CREATE TABLE administrator (
   admin_id SERIAL PRIMARY KEY,
   Fname varchar(255),
   Lname varchar(255),
