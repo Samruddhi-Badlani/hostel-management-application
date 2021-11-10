@@ -1,24 +1,26 @@
-DROP TABLE IF EXISTS Application;
+DROP TABLE IF EXISTS application;
 
-CREATE TABLE Application (
+CREATE TABLE application (
   application_id SERIAL PRIMARY KEY,
-  student_id varchar(255) NOT NULL,
+  student_id int NOT NULL,
   room_no int DEFAULT NULL,
   FOREIGN KEY (student_id) 
   REFERENCES student(student_id)
   ON DELETE SET NULL
-  ON UPDATE CASCADE
+  ON UPDATE CASCADE,
+  FOREIGN KEY (room_no) 
+  REFERENCES room(room_id)
  
 );
 
 
-INSERT INTO Application (student_id,room_no) values
-('0801CS11',1),
-('0801CS12',1),
-('0801CS13',2),
-('0801CS14',1),
-('0801CS15',2);
+INSERT INTO application (student_id,room_no) values
+(1,1),
+(2,1),
+(3,2),
+(4,1),
+(5,2);
 
 
-select * from Application
+select * from application;
 
