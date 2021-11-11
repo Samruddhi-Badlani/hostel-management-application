@@ -126,7 +126,7 @@ router.post("/register", async (req, res) => {
 });
 
 router.post("/students/register", async (req, res) => {
-  let { name, email, password, password2 } = req.body;
+  let { name, email, password, password2,rollNumber } = req.body;
 
   let errors = [];
 
@@ -135,9 +135,10 @@ router.post("/students/register", async (req, res) => {
     email,
     password,
     password2,
+    rollNumber
   });
 
-  if (!name || !email || !password || !password2) {
+  if (!name || !email || !password || !password2 || !rollNumber) {
     errors.push({ message: "Please enter all fields" });
   }
 
@@ -150,7 +151,7 @@ router.post("/students/register", async (req, res) => {
   }
 
   if (errors.length > 0) {
-    res.render("registerStudent", { errors, name, email, password, password2 });
+    res.render("registerStudent", { errors, name, email, password, password2,rollNumber });
   } else {
     hashedPassword = await bcrypt.hash(password, 10);
     console.log(hashedPassword);
@@ -170,20 +171,36 @@ router.post("/students/register", async (req, res) => {
           console.log("already registered   ", errors);
           return res.render("registerStudent", { errors });
         } else {
-          pool.query(
-            `INSERT INTO users (name, email, password)
-                  VALUES ($1, $2, $3)
-                  RETURNING id, password`,
-            [name, email, hashedPassword],
-            (err, results) => {
-              if (err) {
-                throw err;
-              }
-              console.log(results.rows);
-              req.flash("success_msg", "You are now registered. Please log in");
-              res.redirect("/users/students/login");
+          pool.query("SELECT * FROM student WHERE student_id = $1",[rollNumber],(err,results_outer)=>{
+            if (err) {
+              throw err;
             }
-          );
+            else{
+              if(results_outer.rows.length > 0){
+                pool.query(
+                  `INSERT INTO users (name, email, password)
+                        VALUES ($1, $2, $3)
+                        RETURNING id, password`,
+                  [name, email, hashedPassword],
+                  (err, results) => {
+                    if (err) {
+                      throw err;
+                    }
+                    console.log(results.rows);
+                    req.flash("success_msg", "You are now registered. Please log in");
+                    res.redirect("/users/students/login");
+                  }
+                );
+              }
+              else{
+                errors.push({ message: "Invalid Student roll number" });
+          console.log("invalid student  ", errors);
+          return res.render("registerStudent", { errors });
+              }
+              
+            }
+          })
+          
         }
       }
     );
