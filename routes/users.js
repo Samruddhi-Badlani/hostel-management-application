@@ -40,9 +40,51 @@ router.get("/dashboard", checkNotAuthenticated, (req, res) => {
 });
 router.get("/students/dashboard", checkNotAuthenticated, (req, res) => {
   console.log(req.isAuthenticated());
-  res.render("dashboardStudent", { user: req.user, my_null_value: req.user.xyz });
+  pool.query("SELECT hostel_id,hostel_name FROM hostel",(err,result)=>{
+    var hostels = [];
+    for(i = 0 ; i < result.rows.length ; i++){
+      var hostel ={
+        hostel_id : result.rows[i].hostel_id,
+        hostel_name : result.rows[i].hostel_name
+      }
+      hostels.push(hostel);
+    }
+    res.render("dashboardStudent", {user: req.user, my_null_value: req.user.xyz , hostels : hostels });
+  })
+  
 });
+router.get("/students/hostels",checkNotAuthenticated,(req,res)=>{
+  pool.query("SELECT hostel_id,hostel_name FROM hostel",(err,result)=>{
+    var hostels = [];
+    for(i = 0 ; i < result.rows.length ; i++){
+      var hostel ={
+        hostel_id : result.rows[i].hostel_id,
+        hostel_name : result.rows[i].hostel_name
+       
+      }
 
+      hostels.push(hostel);
+      console.log("Hostels are ",hostels);
+      pool.query("SELECT * FROM room",(err,result_room)=>{
+        var rooms = [];
+        for(i = 0 ; i < result_room.rows.length ; i++){
+          var room ={
+            room_id : result_room.rows[i].room_id,
+            rent_amount : result_room.rows[i].rent_amount,
+            room_type : result_room.rows[i].room_type,
+            hostel_id : result_room.rows[i].hostel_id
+           
+          }
+    
+          rooms.push(room);
+          console.log("Rooms are ",rooms);
+        }
+        res.render("view_hostels", {user: req.user, my_null_value: req.user.xyz , hostels : hostels ,rooms:rooms});
+      })
+    }
+    
+  })
+})
 router.get("/admins/dashboard", checkNotAuthenticated, (req, res) => {
   console.log(req.isAuthenticated());
   res.render("dashboardAdmin", { user: req.user, my_null_value: req.user.xyz });
