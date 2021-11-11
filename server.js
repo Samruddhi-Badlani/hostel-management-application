@@ -2,23 +2,14 @@ const express = require("express");
 const app = express();
 const flash = require('express-flash')
 const passport = require("passport");
-var Passport = require('passport').Passport,
-    passportAdmin = new Passport(),
-    passportStudent = new Passport();
 const session = require("express-session");
 require("dotenv").config();
 const bcrypt = require("bcrypt")
 const initializePassport = require("./passportConfig");
-const initializePassportAdmin = require("./passportAdmin");
-const initializePassportStudent = require("./passportStudent");
-initializePassportStudent(passportStudent);
-initializePassportAdmin(passportAdmin);
+
 initializePassport(passport);
 
-
 const users = require("./routes/users");
-const students = require("./routes/students");
-const admins = require("./routes/admins");
 const pool = require("./db");
 app.use(express.urlencoded({ extended: false }));
 app.set("view engine","ejs");
@@ -34,14 +25,9 @@ app.use(
   );
   // Funtion inside passport which initializes passport
   app.use(passport.initialize());
-
   app.use(express.static(__dirname + '/public'));
   // Store our variables to be persisted across the whole session. Works with app.use(Session) above
   app.use(passport.session());
-  app.use(passportAdmin.initialize());
-  app.use(passportAdmin.session());
-  app.use(passportStudent.initialize());
-  app.use(passportStudent.session());
   app.use(flash());
 
   
@@ -51,8 +37,6 @@ app.get("/", (req, res) => {
 });
 
 app.use('/users',users);
-app.use('/students',students);
-app.use('/admins',admins);
 app.listen(3000, () => {
     console.log(`Server running on port `);
   });

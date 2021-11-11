@@ -8,8 +8,15 @@ const flash = require("express-flash");
 const initializePassport = require("../passportConfig");
 
 initializePassport(passport);
+
+router.get("/students/studentindex",(req,res)=>{
+  res.render("registerStudent.ejs");
+})
 router.get("/register", checkAuthenticated, (req, res) => {
   res.render("register.ejs");
+});
+router.get("/students/register", checkAuthenticated, (req, res) => {
+  res.render("registerStudent.ejs");
 });
 
 router.get("/login", checkAuthenticated, (req, res) => {
@@ -17,16 +24,42 @@ router.get("/login", checkAuthenticated, (req, res) => {
   console.log(req.session.flash.error);
   res.render("login.ejs");
 });
-
+router.get("/students/login", checkAuthenticated, (req, res) => {
+  // flash sets a messages variable. passport sets the error message
+  console.log(req.session.flash.error);
+  res.render("loginStudent.ejs");
+});
+router.get("/admins/login", checkAuthenticated, (req, res) => {
+  // flash sets a messages variable. passport sets the error message
+  console.log(req.session.flash.error);
+  res.render("loginAdmin.ejs");
+});
 router.get("/dashboard", checkNotAuthenticated, (req, res) => {
   console.log(req.isAuthenticated());
   res.render("dashboard", { user: req.user, my_null_value: req.user.xyz });
+});
+router.get("/students/dashboard", checkNotAuthenticated, (req, res) => {
+  console.log(req.isAuthenticated());
+  res.render("dashboardStudent", { user: req.user, my_null_value: req.user.xyz });
+});
+
+router.get("/admins/dashboard", checkNotAuthenticated, (req, res) => {
+  console.log(req.isAuthenticated());
+  res.render("dashboardAdmin", { user: req.user, my_null_value: req.user.xyz });
 });
 router.get("/logout", (req, res) => {
   req.logout();
   res.render("index");
 });
 
+router.get("/students/logout", (req, res) => {
+  req.logout();
+  res.render("index");
+});
+router.get("/admins/logout", (req, res) => {
+  req.logout();
+  res.render("index");
+});
 router.post("/register", async (req, res) => {
   let { name, email, password, password2 } = req.body;
 
@@ -92,11 +125,93 @@ router.post("/register", async (req, res) => {
   }
 });
 
+router.post("/students/register", async (req, res) => {
+  let { name, email, password, password2 } = req.body;
+
+  let errors = [];
+
+  console.log({
+    name,
+    email,
+    password,
+    password2,
+  });
+
+  if (!name || !email || !password || !password2) {
+    errors.push({ message: "Please enter all fields" });
+  }
+
+  if (password.length < 6) {
+    errors.push({ message: "Password must be a least 6 characters long" });
+  }
+
+  if (password !== password2) {
+    errors.push({ message: "Passwords do not match" });
+  }
+
+  if (errors.length > 0) {
+    res.render("registerStudent", { errors, name, email, password, password2 });
+  } else {
+    hashedPassword = await bcrypt.hash(password, 10);
+    console.log(hashedPassword);
+    // Validation passed
+    pool.query(
+      `SELECT * FROM users
+          WHERE email = $1`,
+      [email],
+      (err, results) => {
+        if (err) {
+          console.log(err);
+        }
+        console.log(results.rows);
+
+        if (results.rows.length > 0) {
+          errors.push({ message: "Email already registered" });
+          console.log("already registered   ", errors);
+          return res.render("registerStudent", { errors });
+        } else {
+          pool.query(
+            `INSERT INTO users (name, email, password)
+                  VALUES ($1, $2, $3)
+                  RETURNING id, password`,
+            [name, email, hashedPassword],
+            (err, results) => {
+              if (err) {
+                throw err;
+              }
+              console.log(results.rows);
+              req.flash("success_msg", "You are now registered. Please log in");
+              res.redirect("/users/students/login");
+            }
+          );
+        }
+      }
+    );
+  }
+});
+
 router.post(
   "/login",
   passport.authenticate("local", {
     successRedirect: "/users/dashboard",
     failureRedirect: "/users/login",
+    failureFlash: true,
+  })
+);
+router.post(
+  "/students/login",
+  passport.authenticate("local", {
+    successRedirect: "/users/students/dashboard",
+    failureRedirect: "/users/students/login",
+    failureFlash: true,
+  })
+);
+
+router.post(
+  "/admins/login",
+  passport.authenticate("local", {
+    successRedirect: "/users/admins/dashboard",
+    failureRedirect: "/users/admins/login",
     failureFlash: true,
   })
 );

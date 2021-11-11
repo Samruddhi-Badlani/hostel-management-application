@@ -1,5 +1,5 @@
 {
-  "name": "y",
+  "name": "NodeJsFinal",
   "version": "1.0.0",
   "description": "Steps to set up the application",
   "main": "index.js",
@@ -8,7 +8,7 @@
     "start": "node server.js"
   },
   "keywords": [],
-  "author": "Samruddhi-Badlani",
+  "author": "",
   "license": "ISC",
   "dependencies": {
     "bcrypt": "^5.0.1",
