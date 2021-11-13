@@ -1,4 +1,4 @@
-# Eco_Bricks_Channel
+# Hostel Management 
 Steps to set up the application
 
 npm install
