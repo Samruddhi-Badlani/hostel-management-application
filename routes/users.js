@@ -49,7 +49,20 @@ router.get("/students/dashboard", checkNotAuthenticated, (req, res) => {
       }
       hostels.push(hostel);
     }
-    res.render("dashboardStudent", {user: req.user, my_null_value: req.user.xyz , hostels : hostels });
+    const studentID = req.user.id;
+    console.log(studentID, " is studnet id");
+    var student ;
+    pool.query(`SELECT * FROM student WHERE user_id = $1`,[studentID],(error1,results1)=>{
+      console.log(results1.rows);
+      student = {
+        id : results1.rows[0].student_id,
+        name : results1.rows[0].fname,
+        phone : results1.rows[0].phone_no
+      }
+      console.log("Student dashboard called student object passed= ",student);
+      res.render("dashboardStudent", {user: student, my_null_value: req.user.xyz , hostels : hostels });
+    })
+    
   })
   
 });
@@ -310,6 +323,20 @@ router.post("/profile", checkNotAuthenticated, (req, res) => {
   };
 
   res.render("profile", { user: myUser });
+});
+router.post("/students/profile", checkNotAuthenticated, (req, res) => {
+  var studentID= req.user.id;
+  pool.query(`SELECT * FROM student WHERE user_id = $1`,[studentID],(error1,results1)=>{
+    console.log(results1.rows);
+    student = {
+      id : results1.rows[0].student_id,
+      name : results1.rows[0].fname,
+      phone : results1.rows[0].phone_no
+    }
+    console.log("Profile called student object passed = ",student);
+    res.render("profileStudent", { user: student });
+  })
+  
 });
 
 router.post("/profileUpdate", checkNotAuthenticated, (req, res) => {
