@@ -60,7 +60,35 @@ router.get("/students/dashboard", checkNotAuthenticated, (req, res) => {
         phone : results1.rows[0].phone_no
       }
       console.log("Student dashboard called student object passed= ",student);
-      res.render("dashboardStudent", {user: student, my_null_value: req.user.xyz , hostels : hostels });
+      res.render("dashboardStudent", {user: student, my_null_value: req.user.xyz , hostels : hostels ,profileView:false});
+    })
+    
+  })
+  
+});
+router.post("/students/dashboard", checkNotAuthenticated, (req, res) => {
+  console.log(req.isAuthenticated());
+  pool.query("SELECT hostel_id,hostel_name FROM hostel",(err,result)=>{
+    var hostels = [];
+    for(i = 0 ; i < result.rows.length ; i++){
+      var hostel ={
+        hostel_id : result.rows[i].hostel_id,
+        hostel_name : result.rows[i].hostel_name
+      }
+      hostels.push(hostel);
+    }
+    const studentID = req.user.id;
+    console.log(studentID, " is studnet id");
+    var student ;
+    pool.query(`SELECT * FROM student WHERE user_id = $1`,[studentID],(error1,results1)=>{
+      console.log(results1.rows);
+      student = {
+        id : results1.rows[0].student_id,
+        name : results1.rows[0].fname,
+        phone : results1.rows[0].phone_no
+      }
+      console.log("Student dashboard called student object passed= ",student);
+      res.render("dashboardStudent", {user: student, my_null_value: req.user.xyz , hostels : hostels ,profileView : req.body.profileView});
     })
     
   })

@@ -85,64 +85,73 @@
         <input type="image" class="myProfileImage" src="/css/images/profile-img.png" alt="Submit" style="float: right;">
       </form>
     </nav>
-    <div class="split_outer">
-      <div class="split left">
-        <div class="centered">
-          <h1>Boys Hostel</h1>
-          <!-- ek chiz -->
-          <div class="cardsBox">
-            <div class="card" style="width: 18rem">
-              <img src="/css/images/hostels.png" class="card-img-top" alt="..." />
-              <div class="card-body">
-                <h5 class="card-title">Hostel 1</h5>
-               
-                <a href="#" class="btn btn-primary">Explore more</a>
-              </div>
-            </div>
-            <div class="card" style="width: 18rem">
-              
-              <img src="/css/images/hostels.png" class="card-img-top" alt="..." />
-              <div class="card-body">
-                <h5 class="card-title">Hostel 2</h5>
-               
-                <a href="#" class="btn btn-primary">Explore more</a>
-              </div>
-            </div>
-
-
-            
+    <div class="container">
+      <div class="row pt-4 pl-4 pr-4">
+        <div class="col text-center text-capitalize">
+          <h1>Hostel Database Management System</h1>
         </div>
       </div>
-   
-      <div class="split right">
-        <div class="centered">
-          <h1>Girls Hostel</h1>
-          <!-- dusri chiz -->
-
-          <div class="card" style="width: 18rem">
-            <img src="/css/images/hostels.png" class="card-img-top" alt="..." />
-            <div class="card-body">
-              <h5 class="card-title">Hostel 1</h5>
-             
-              <a href="#" class="btn btn-primary">Explore more</a>
-            </div>
-          </div>
-
-          <div class="card" style="width: 18rem">
-            <img src="/css/images/hostels.png" class="card-img-top" alt="..." />
-            <div class="card-body">
-              <h5 class="card-title">Hostel 2</h5>
-             
-              <a href="#" class="btn btn-primary">Explore more</a>
-            </div>
-          </div>
-          <a href="/users/students/hostels">View Hostel Information</a>
-      </div>
-      </div>
+      <hr class="mt-0">
       
-    </div> 
-    <div class="studentBox">
-      <h1></h1>
+      <div class="row p-4">
+        <div class="col-3">
+          <div id="studentDetailBox" style="display: none;"></div>
+          <form action="/users/students/dashboard" method="post">
+            <input type="hidden" id="profileView" name="profileView" value="true" >
+          <input id="showStudentDetails" name="showStudentDetails" class="btn text-white btn-primary col-12" type="submit" value="View Details"></button><br/><br/>
+        </form>
+          <button id="showAttendance" class="btn text-white btn-primary col-12">View Attendance</button><br/><br/>
+          <button id="apply" class="btn btn-primary text-white col-12">Apply</button><br/><br/>
+          <button id="viewInventory" class="btn text-white btn-primary col-12">View Hostel Inventory</button><br/><br/>
+          <button id="viewFines" class="btn text-white btn-primary col-12">View Fines</button><br/><br/>
+          <!--<button id="viewApplicationStatus" class="btn text-white btn-primary col-12">View Application Status</button><br/><br/>-->
+        </div>
+        <div class="col-9">
+          <div id="noticeBoard" class="border p-5 bg-light">
+          
+          </div>
+        </div>
+        
+        
+  
+     
+      <div class="col-3">
+       
+          <% if(profileView != false) { %>
+            <form action="/users/students/profileUpdate" method="POST" class="GetInfoForm">
+  
+              <input type="hidden" name='id' value=<%=user.id %>>
+              <div class="myInputBox">
+                  <label class="labelFields" for="name">Roll Number</label>
+                  <input class="inputFields" type="text" name='name' id='name' required value='<%=user.id %>' disabled >
+                  
+              </div>
+              <div class="myInputBox">
+                  <label class="labelFields" for="name">Name</label>
+                  <input class="inputFields" type="text" name='name' id='name' required value='<%=user.name %>'  disabled>
+      
+              </div>
+              
+            
+            
+              <div class="myInputBox">
+                  <label class="labelFields" for="phone">Phone</label>
+                 
+                  <input class="inputFields" type="tel" name='phone' id='phone' pattern="[+]{1}[0-9]{11,14}"  required value='<%=user.phone %>'>
+              </div>
+      
+            
+             
+             
+             
+              
+              <input type="submit" value="Save" id="submitProfile">
+          </form>
+          <% } %>
+        
+      </div>
+      </div>
     </div>
+    <script src="/js/dashboardStudent.js"></script>
   </body>
 </html>
