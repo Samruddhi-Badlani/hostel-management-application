@@ -213,35 +213,31 @@ router.post("/students/register", async (req, res) => {
           console.log("already registered   ", errors);
           return res.render("registerStudent", { errors });
         } else {
-          pool.query("SELECT * FROM student WHERE student_id = $1",[rollNumber],(err,results_outer)=>{
-            if (err) {
-              throw err;
-            }
-            else{
-              if(results_outer.rows.length > 0){
-                pool.query(
-                  `INSERT INTO users (name, email, password)
-                        VALUES ($1, $2, $3)
-                        RETURNING id, password`,
-                  [name, email, hashedPassword],
-                  (err, results) => {
-                    if (err) {
-                      throw err;
-                    }
-                    console.log(results.rows);
-                    req.flash("success_msg", "You are now registered. Please log in");
-                    res.redirect("/users/students/login");
-                  }
-                );
+          pool.query(
+            `INSERT INTO users (name, email, password)
+                  VALUES ($1, $2, $3)
+                  RETURNING id, password`,
+            [name, email, hashedPassword],
+            (err, results) => {
+              if (err) {
+                throw err;
               }
-              else{
-                errors.push({ message: "Invalid Student roll number" });
-          console.log("invalid student  ", errors);
-          return res.render("registerStudent", { errors });
-              }
+              var studentId = results.rows[0].id;
+              pool.query(
+                `INSERT INTO student (user_id,student_id,fname)
+                      VALUES ($1, $2,$3)
+                      RETURNING student_id`,[studentId,rollNumber,name],(err2,resultsFinal)=>{
+
+                        if(err2){
+                          console.log(err2)
+                        }
+                        console.log(results.rows);
+              req.flash("success_msg", "You are now registered. Please log in");
+              res.redirect("/users/students/login");
+                      })
               
             }
-          })
+          );
           
         }
       }

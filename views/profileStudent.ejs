@@ -1,0 +1,69 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="../css/dashboard.css">
+    <link rel="stylesheet" href="../css/ecobrick-profile.css">
+    <link href="https://fonts.googleapis.com/css2?family=IM+Fell+DW+Pica:ital@1&display=swap" rel="stylesheet">
+</head>
+
+<body>
+   
+    <div class="Head">
+        <div class="flex-item-Head"> <img src="../css/images/profile-img.png" alt="" width="40px" height="40px"></div>
+        <div class="flex-item-Head" style="background-color: aqua;"><span>
+                <%= user.name %>
+            </span></div>
+    </div>
+    <form action="/users/students/profileUpdate" method="POST" class="GetInfoForm">
+
+        <input type="hidden" name='id' value=<%=user.id %>>
+        <div class="myInputBox">
+            <label class="labelFields" for="name">Roll Number</label>
+            <input class="inputFields" type="text" name='name' id='name' required value='<%=user.id %>' disabled >
+            
+        </div>
+        <div class="myInputBox">
+            <label class="labelFields" for="name">First Name</label>
+            <input class="inputFields" type="text" name='name' id='name' required value='<%=user.fname %>'  disabled>
+
+        </div>
+        
+        <div class="myInputBox">
+            <label class="labelFields" for="name">Last Name</label>
+            <input class="inputFields" type="text" name='name' id='name' required value='<%=user.lname %>'  disabled>
+            
+        </div>
+      
+        <div class="myInputBox">
+            <label class="labelFields" for="phone">Phone</label>
+           
+            <input class="inputFields" type="tel" name='phone' id='phone' pattern="[+]{1}[0-9]{11,14}"  required value='<%=user.phone_no %>'>
+        </div>
+
+      
+       
+       
+       
+        
+        <input type="submit" value="Save" id="submitProfile">
+    </form>
+
+    <form action="/users/feedback" method="GET">
+        <input type="submit" value="Give feedback">
+    </form>
+    <div id="Info">
+
+
+    </div>
+
+
+
+
+</body>
+
+</html>
