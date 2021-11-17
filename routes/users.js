@@ -482,6 +482,7 @@ router.get("/contactlist", checkNotAuthenticated, (req, res) => {
     // console.log(results.rows);
     res.render("contactlist", { data: results.rows });
   });
+  res.redirect('/');
 });
 
 router.get("/feedback", checkNotAuthenticated, (req, res) => {
@@ -532,7 +533,7 @@ router.post("/students/hostelStudent", (req, res) => {
           id: results2.rows[i].hostel_id,
           name: results2.rows[i].hostel_name,
           no_of_rooms: results2.rows[i].no_of_rooms,
-          type : results2.rows[i].type
+          type: results2.rows[i].type
         }
         hostels.push(hostel);
       }
@@ -554,13 +555,14 @@ router.post("/students/applyForRoom", (req, res) => {
       gender: results1.rows[0].gender
     }
 
-    
-      console.log("Apply for room called student object passed = ", student);
-      res.render("roomApply", { user: student});
-  
+
+    console.log("Apply for room called student object passed = ", student);
+    res.render("roomApply", { user: student });
+
 
   })
 })
+
 router.post("/students/applyForNonIsolatedRoom", (req, res) => {
   var studentID = req.user.id;
   pool.query(`SELECT * FROM student WHERE user_id = $1`, [studentID], (error1, results1) => {
@@ -572,10 +574,28 @@ router.post("/students/applyForNonIsolatedRoom", (req, res) => {
       gender: results1.rows[0].gender
     }
 
-    
-      console.log("Apply for roomnon isolated called student object passed = ", student);
-      res.render("roomNonIsolatedApply", { user: student});
-  
+    pool.query(`SELECT * FROM room WHERE room_type=$1`, ['Non-Isolated'], (err2, results2) => {
+      if (err2) {
+        console.log(err2);
+      }
+      var rooms = [];
+      for (var i = 0; i < results2.rows.length; i++) {
+        var room = {
+          room_id: results2.rows[i].room_id,
+          rent_amount: results2.rows[i].rent_amount,
+          capacity: results2.rows[i].capacity,
+          hostel_id: results2.rows[i].hostel_id,
+          room_type: results2.rows[i].room_type
+        }
+        rooms.push(room);
+      }
+      console.log("Apply for room isolated called student object passed = ", student);
+      res.render("roomNonIsolatedApply", { user: student, rooms: rooms });
+    })
+
+
+
+
 
   })
 })
@@ -590,10 +610,28 @@ router.post("/students/applyForIsolatedRoom", (req, res) => {
       gender: results1.rows[0].gender
     }
 
-    
+    pool.query(`SELECT * FROM room WHERE room_type=$1`, ['Isolated'], (err2, results2) => {
+      if (err2) {
+        console.log(err2);
+      }
+      var rooms = [];
+      for (var i = 0; i < results2.rows.length; i++) {
+        var room = {
+          room_id: results2.rows[i].room_id,
+          rent_amount: results2.rows[i].rent_amount,
+          capacity: results2.rows[i].capacity,
+          hostel_id: results2.rows[i].hostel_id,
+          room_type: results2.rows[i].room_type
+        }
+        rooms.push(room);
+      }
       console.log("Apply for room isolated called student object passed = ", student);
-      res.render("roomIsolatedApply", { user: student});
-  
+      res.render("roomIsolatedApply", { user: student, rooms: rooms });
+    })
+
+
+
+
 
   })
 })
@@ -605,7 +643,7 @@ router.post("/admins/hostelStudent", (req, res) => {
       id: results1.rows[0].admin_id,
       name: results1.rows[0].fname + results1.rows[0].lname,
       phone: results1.rows[0].phone_no,
-      
+
 
     }
 
@@ -616,7 +654,7 @@ router.post("/admins/hostelStudent", (req, res) => {
           id: results2.rows[i].hostel_id,
           name: results2.rows[i].hostel_name,
           no_of_rooms: results2.rows[i].no_of_rooms,
-          type : results2.rows[i].type
+          type: results2.rows[i].type
         }
         hostels.push(hostel);
       }
@@ -648,10 +686,10 @@ router.post("/admins/addHostelByAdmin", (req, res) => {
     rooms: req.body.myHostelRooms,
     admin_id: req.body.myUserId,
     hostel_id: req.body.myHostelID,
-    type : req.body.myHostelType
+    type: req.body.myHostelType
   }
   pool.query(`INSERT INTO hostel(hostel_name,phone_no,no_of_rooms,admin_id,hostel_id,type) VALUES ($1,$2,$3,$4,$5,$6)`,
-    [hostel.name, hostel.phone, hostel.rooms, hostel.admin_id, hostel.hostel_id,hostel.type], (err1, results1) => {
+    [hostel.name, hostel.phone, hostel.rooms, hostel.admin_id, hostel.hostel_id, hostel.type], (err1, results1) => {
       if (err1) {
         console.log(err1);
       }
@@ -691,10 +729,10 @@ router.post("/admins/addStaffByAdmin", (req, res) => {
   pool.query(`INSERT INTO staff(staff_id,staff_name,contact_number,gender,salary,job_role,hostel_id) 
               VALUES ($1,$2,$3,$4,$5,$6,$7)`, [staff.staff_id, staff.staff_name, staff.contact_number, staff.gender, staff.salary, staff.job_role, staff.hostel_id],
     (err1, results1) => {
-      if(err1){
+      if (err1) {
         console.log(err1)
       }
-      else{
+      else {
         console.log("Staff added successfully");
       }
       res.redirect("/users/admins/dashboard");
@@ -702,7 +740,7 @@ router.post("/admins/addStaffByAdmin", (req, res) => {
     })
 })
 
-router.post("/admins/staffAdmin",(req,res)=>{
+router.post("/admins/staffAdmin", (req, res) => {
   var adminID = req.user.id;
   pool.query(`SELECT * FROM administrator WHERE user_id = $1`, [adminID], (error1, results1) => {
     console.log(results1.rows);
@@ -719,19 +757,35 @@ router.post("/admins/staffAdmin",(req,res)=>{
         staff_person = {
           staff_id: results2.rows[i].staff_id,
           staff_name: results2.rows[i].staff_name,
-          gender : results2.rows[i].gender,
-          salary : results2.rows[i].salary,
-          job_role : results2.rows[i].job_role,
-          hostel_id : results2.rows[i].hostel_id,
+          gender: results2.rows[i].gender,
+          salary: results2.rows[i].salary,
+          job_role: results2.rows[i].job_role,
+          hostel_id: results2.rows[i].hostel_id,
           contact_number: results2.rows[i].contact_number
         }
         staff.push(staff_person);
       }
       console.log("view staff  called for staff object passed = ", staff);
-      res.render("staffViewAdmin", { user: admin, staff: staff});
+      res.render("staffViewAdmin", { user: admin, staff: staff });
     })
 
   })
- 
+
+})
+
+router.post("/students/applyRoomSubmitBoth", (req, res) => {
+  var student_id = req.body.myUserId;
+  var room_id = req.body.room_id
+  pool.query(`INSERT INTO application(room_no,student_id) VALUES ($1,$2)`, [room_id, student_id], (err1, results1) => {
+    if(err1){
+      console.log(err1);
+    }
+    else{
+      req.flash("success_msg", "You have successfully applied for room");
+    }
+    console.log("Application received by student id = ", student_id, " for room ", room_id);
+    res.redirect("/users/students/dashboard");
+  })
+
 })
 module.exports = router;

@@ -66,7 +66,7 @@
           </form>
         </div>
         <div id="logHead">
-        <a href="/users/contactlist"  class="logHeadItem">contact list</a>
+        
        
          
         <a href="/users/students/logout"  class="logHeadItem">Logout</a>
@@ -120,6 +120,31 @@
         </div>
       </div>
       <hr class="mt-0">
+
+      <ul>
+        <% if (typeof errors != 'undefined') { %> <% errors.forEach(error => { %>
+        <li><%= error.message %></li>
+        <% }) %> <% } %>
+      </ul>
+  
+      <ul>
+        <% if(typeof messages != 'undefined') { %>
+        <% if(messages.success_msg) { %>
+        <li><%= messages.success_msg %></li>
+        <% } %>
+        <% if(messages.message) { %>
+          <li><%= messages.message %></li>
+          <% } %>
+        <% } %>
+      </ul>
+  
+      <ul>
+       
+        <% if (messages.error) { %>
+        <li><%= messages.error %></li>
+        <% } %>
+      
+      </ul>
       
       <div class="row p-4">
         <div class="col-3">

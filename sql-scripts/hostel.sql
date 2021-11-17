@@ -15,3 +15,7 @@ INSERT INTO hostel(hostel_id, hostel_name, phone_no, no_of_rooms, no_of_students
 ( '2','G',0731225544,200,NULL,2);
 
 select * from hostel;
+
+
+ALTER TABLE hostel
+ADD COLUMN type VARCHAR(30);
