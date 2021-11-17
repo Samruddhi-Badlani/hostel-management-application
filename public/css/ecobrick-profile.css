@@ -4,7 +4,7 @@
 }
 
 body {
-    background-image: url("images/green-c.jpg");
+    /* background-image: url("images/green-c.jpg"); */
     background-repeat: no-repeat;
     background-size: cover;
     background-position: center;
@@ -81,10 +81,6 @@ a.logHeadItem:hover {
     transform: translate(-50%, -50%);
     text-align: center;
     margin-top: 100px ;
-  }
-  .Head
-  {
-      color: white;
   }
   
   

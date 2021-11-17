@@ -70,9 +70,9 @@
        
          
         <a href="/users/students/logout"  class="logHeadItem">Logout</a>
-        <form action="/users/profile" method="POST" class="logHeadItem" >
-          <input type="hidden" name='myUserId' value='<%=user.id %>'>
-          <input type='hidden' name='myUserName' value = '<%= user.name %>' >
+        <form action="/users/students/profile" method="POST" class="logHeadItem" >
+          <input  type='hidden'   name='myUserId' value='<%=user.id %>'>
+          <input  type='hidden' name='myUserName' value = '<%= user.name %>' >
           <input type='hidden' name='myUserEmail' value = '<%= user.email %>' >
           <input type='hidden' name='myUserPhone' value = '<%= user.phone %>' >
           <input type='hidden' name='myUserCity' value = '<%= user.city %>' >
@@ -84,65 +84,55 @@
           <input type='hidden' name='myUserCapacity' value = '<%= user.capacity %>' >
         <input type="image" class="myProfileImage" src="/css/images/profile-img.png" alt="Submit" style="float: right;">
       </form>
+      <form action="/users/students/hostelStudent" method="POST" class="logHeadItem" >
+        <input  type='hidden'   name='myUserId' value='<%=user.id %>'>
+        <input  type='hidden' name='myUserName' value = '<%= user.name %>' >
+        <input type='hidden' name='myUserEmail' value = '<%= user.email %>' >
+        <input type='hidden' name='myUserPhone' value = '<%= user.phone %>' >
+        <input type='hidden' name='myUserCity' value = '<%= user.city %>' >
+        <input type='hidden' name='myUserState' value = '<%= user.state %>' >
+        <input type='hidden' name='myUserCountry' value = '<%= user.country %>' > 
+        <input type='hidden' name='myUserAddress' value='<%= user.address %>' > 
+        <input type='hidden' name='myUserJobRole' value = '<%= user.job_role %>' >
+        <input type='hidden' name='myUserCost' value = '<%= user.cost %>' >
+        <input type='hidden' name='myUserCapacity' value = '<%= user.capacity %>' >
+      
+    </form>
     </nav>
-    <div class="split_outer">
-      <div class="split left">
-        <div class="centered">
-          <h1>Boys Hostel</h1>
-          <!-- ek chiz -->
-          <div class="cardsBox">
-            <div class="card" style="width: 18rem">
-              <img src="/css/images/hostels.png" class="card-img-top" alt="..." />
-              <div class="card-body">
-                <h5 class="card-title">Hostel 1</h5>
-               
-                <a href="#" class="btn btn-primary">Explore more</a>
-              </div>
-            </div>
-            <div class="card" style="width: 18rem">
-              
-              <img src="/css/images/hostels.png" class="card-img-top" alt="..." />
-              <div class="card-body">
-                <h5 class="card-title">Hostel 2</h5>
-               
-                <a href="#" class="btn btn-primary">Explore more</a>
-              </div>
-            </div>
-
-
-            
+    <div class="container">
+      <div class="row pt-4 pl-4 pr-4">
+        <div class="col text-center text-capitalize">
+          <h1>Hostel Database Management System</h1>
         </div>
       </div>
-   
-      <div class="split right">
-        <div class="centered">
-          <h1>Girls Hostel</h1>
-          <!-- dusri chiz -->
-
-          <div class="card" style="width: 18rem">
-            <img src="/css/images/hostels.png" class="card-img-top" alt="..." />
-            <div class="card-body">
-              <h5 class="card-title">Hostel 1</h5>
-             
-              <a href="#" class="btn btn-primary">Explore more</a>
-            </div>
-          </div>
-
-          <div class="card" style="width: 18rem">
-            <img src="/css/images/hostels.png" class="card-img-top" alt="..." />
-            <div class="card-body">
-              <h5 class="card-title">Hostel 2</h5>
-             
-              <a href="#" class="btn btn-primary">Explore more</a>
-            </div>
-          </div>
-          <a href="/users/students/hostels">View Hostel Information</a>
-      </div>
-      </div>
+      <hr class="mt-0">
       
-    </div> 
-    <div class="studentBox">
-      <h1></h1>
+      <div class="row p-4">
+        <div class="col-3">
+          <div id="studentDetailBox" style="display: none;"></div>
+          <form action="/users/students/profile" method="post">
+            <input type="hidden" id="profileView" name="profileView" value="true" >
+          <input id="showStudentDetails" name="showStudentDetails" class="btn text-white btn-primary col-12" type="submit" value="View Details"></button><br/><br/>
+        </form>
+        <form action="/users/students/hostelStudent" method="post">
+          <input type="submit" id="showHostels" class="btn text-white btn-primary col-12" value="View Hostel Information"></button><br/><br/>
+      </form>
+         
+          
+          <!--<button id="viewApplicationStatus" class="btn text-white btn-primary col-12">View Application Status</button><br/><br/>-->
+        </div>
+        <div class="col-9">
+          <div id="noticeBoard" class="border p-5 bg-light">
+          
+          </div>
+        </div>
+        
+        
+  
+     
+      
+      </div>
     </div>
+    <script src="/js/dashboardStudent.js"></script>
   </body>
 </html>

@@ -9,7 +9,7 @@ const initializePassport = require("../passportConfig");
 
 initializePassport(passport);
 
-router.get("/students/studentindex",(req,res)=>{
+router.get("/students/studentindex", (req, res) => {
   res.render("registerStudent.ejs");
 })
 router.get("/register", checkAuthenticated, (req, res) => {
@@ -40,54 +40,106 @@ router.get("/dashboard", checkNotAuthenticated, (req, res) => {
 });
 router.get("/students/dashboard", checkNotAuthenticated, (req, res) => {
   console.log(req.isAuthenticated());
-  pool.query("SELECT hostel_id,hostel_name FROM hostel",(err,result)=>{
+  pool.query("SELECT hostel_id,hostel_name FROM hostel", (err, result) => {
     var hostels = [];
-    for(i = 0 ; i < result.rows.length ; i++){
-      var hostel ={
-        hostel_id : result.rows[i].hostel_id,
-        hostel_name : result.rows[i].hostel_name
+    for (i = 0; i < result.rows.length; i++) {
+      var hostel = {
+        hostel_id: result.rows[i].hostel_id,
+        hostel_name: result.rows[i].hostel_name
       }
       hostels.push(hostel);
     }
-    res.render("dashboardStudent", {user: req.user, my_null_value: req.user.xyz , hostels : hostels });
+    const studentID = req.user.id;
+    console.log(studentID, " is studnet id");
+    var student;
+    pool.query(`SELECT * FROM student WHERE user_id = $1`, [studentID], (error1, results1) => {
+      console.log(results1.rows);
+      student = {
+        id: results1.rows[0].student_id,
+        name: results1.rows[0].fname,
+        phone: results1.rows[0].phone_no,
+        gender: results1.rows[0].gender
+      }
+      console.log("Student dashboard called student object passed= ", student);
+      res.render("dashboardStudent", { user: student, my_null_value: req.user.xyz, hostels: hostels, profileView: false });
+    })
+
   })
-  
+
 });
-router.get("/students/hostels",checkNotAuthenticated,(req,res)=>{
-  pool.query("SELECT hostel_id,hostel_name FROM hostel",(err,result)=>{
+router.post("/students/dashboard", checkNotAuthenticated, (req, res) => {
+  console.log(req.isAuthenticated());
+  pool.query("SELECT hostel_id,hostel_name FROM hostel", (err, result) => {
     var hostels = [];
-    for(i = 0 ; i < result.rows.length ; i++){
-      var hostel ={
-        hostel_id : result.rows[i].hostel_id,
-        hostel_name : result.rows[i].hostel_name
-       
+    for (i = 0; i < result.rows.length; i++) {
+      var hostel = {
+        hostel_id: result.rows[i].hostel_id,
+        hostel_name: result.rows[i].hostel_name
+      }
+      hostels.push(hostel);
+    }
+    const studentID = req.user.id;
+    console.log(studentID, " is studnet id");
+    var student;
+    pool.query(`SELECT * FROM student WHERE user_id = $1`, [studentID], (error1, results1) => {
+      console.log(results1.rows);
+      student = {
+        id: results1.rows[0].student_id,
+        name: results1.rows[0].fname,
+        phone: results1.rows[0].phone_no,
+        gender: results1.rows[0].gender
+      }
+      console.log("Student dashboard called student object passed= ", student);
+      res.render("dashboardStudent", { user: student, my_null_value: req.user.xyz, hostels: hostels, profileView: req.body.profileView });
+    })
+
+  })
+
+});
+router.get("/students/hostels", checkNotAuthenticated, (req, res) => {
+  pool.query("SELECT hostel_id,hostel_name FROM hostel", (err, result) => {
+    var hostels = [];
+    for (i = 0; i < result.rows.length; i++) {
+      var hostel = {
+        hostel_id: result.rows[i].hostel_id,
+        hostel_name: result.rows[i].hostel_name
+
       }
 
       hostels.push(hostel);
-      console.log("Hostels are ",hostels);
-      pool.query("SELECT * FROM room",(err,result_room)=>{
+      console.log("Hostels are ", hostels);
+      pool.query("SELECT * FROM room", (err, result_room) => {
         var rooms = [];
-        for(i = 0 ; i < result_room.rows.length ; i++){
-          var room ={
-            room_id : result_room.rows[i].room_id,
-            rent_amount : result_room.rows[i].rent_amount,
-            room_type : result_room.rows[i].room_type,
-            hostel_id : result_room.rows[i].hostel_id
-           
+        for (i = 0; i < result_room.rows.length; i++) {
+          var room = {
+            room_id: result_room.rows[i].room_id,
+            rent_amount: result_room.rows[i].rent_amount,
+            room_type: result_room.rows[i].room_type,
+            hostel_id: result_room.rows[i].hostel_id
+
           }
-    
+
           rooms.push(room);
-          console.log("Rooms are ",rooms);
+          console.log("Rooms are ", rooms);
         }
-        res.render("view_hostels", {user: req.user, my_null_value: req.user.xyz , hostels : hostels ,rooms:rooms});
+        res.render("view_hostels", { user: req.user, my_null_value: req.user.xyz, hostels: hostels, rooms: rooms });
       })
     }
-    
+
   })
 })
 router.get("/admins/dashboard", checkNotAuthenticated, (req, res) => {
   console.log(req.isAuthenticated());
-  res.render("dashboardAdmin", { user: req.user, my_null_value: req.user.xyz });
+  pool.query(`SELECT * FROM administrator where user_id=$1`, [req.user.id], (err, results) => {
+    var admin = {
+      id: results.rows[0].admin_id,
+      name: results.rows[0].fname + results.rows[0].lname,
+      phone: results.rows[0].phone_no
+    }
+    console.log("admin dashboard passed this object", admin)
+    res.render("dashboardAdmin", { user: admin, my_null_value: req.user.xyz });
+  })
+
 });
 router.get("/logout", (req, res) => {
   req.logout();
@@ -168,7 +220,7 @@ router.post("/register", async (req, res) => {
 });
 
 router.post("/students/register", async (req, res) => {
-  let { name, email, password, password2,rollNumber } = req.body;
+  let { name, email, password, password2, rollNumber } = req.body;
 
   let errors = [];
 
@@ -193,7 +245,7 @@ router.post("/students/register", async (req, res) => {
   }
 
   if (errors.length > 0) {
-    res.render("registerStudent", { errors, name, email, password, password2,rollNumber });
+    res.render("registerStudent", { errors, name, email, password, password2, rollNumber });
   } else {
     hashedPassword = await bcrypt.hash(password, 10);
     console.log(hashedPassword);
@@ -213,36 +265,32 @@ router.post("/students/register", async (req, res) => {
           console.log("already registered   ", errors);
           return res.render("registerStudent", { errors });
         } else {
-          pool.query("SELECT * FROM student WHERE student_id = $1",[rollNumber],(err,results_outer)=>{
-            if (err) {
-              throw err;
-            }
-            else{
-              if(results_outer.rows.length > 0){
-                pool.query(
-                  `INSERT INTO users (name, email, password)
-                        VALUES ($1, $2, $3)
-                        RETURNING id, password`,
-                  [name, email, hashedPassword],
-                  (err, results) => {
-                    if (err) {
-                      throw err;
-                    }
-                    console.log(results.rows);
-                    req.flash("success_msg", "You are now registered. Please log in");
-                    res.redirect("/users/students/login");
-                  }
-                );
+          pool.query(
+            `INSERT INTO users (name, email, password)
+                  VALUES ($1, $2, $3)
+                  RETURNING id, password`,
+            [name, email, hashedPassword],
+            (err, results) => {
+              if (err) {
+                throw err;
               }
-              else{
-                errors.push({ message: "Invalid Student roll number" });
-          console.log("invalid student  ", errors);
-          return res.render("registerStudent", { errors });
-              }
-              
+              var studentId = results.rows[0].id;
+              pool.query(
+                `INSERT INTO student (user_id,student_id,fname)
+                      VALUES ($1, $2,$3)
+                      RETURNING student_id`, [studentId, rollNumber, name], (err2, resultsFinal) => {
+
+                if (err2) {
+                  console.log(err2)
+                }
+                console.log(results.rows);
+                req.flash("success_msg", "You are now registered. Please log in");
+                res.redirect("/users/students/login");
+              })
+
             }
-          })
-          
+          );
+
         }
       }
     );
@@ -286,7 +334,7 @@ function checkNotAuthenticated(req, res, next) {
   if (req.isAuthenticated()) {
     return next();
   }
-  res.redirect("/users/login");
+  res.redirect("/");
 }
 
 router.post("/profile", checkNotAuthenticated, (req, res) => {
@@ -315,7 +363,78 @@ router.post("/profile", checkNotAuthenticated, (req, res) => {
 
   res.render("profile", { user: myUser });
 });
+router.post("/students/profile", checkNotAuthenticated, (req, res) => {
+  var studentID = req.user.id;
+  pool.query(`SELECT * FROM student WHERE user_id = $1`, [studentID], (error1, results1) => {
+    console.log(results1.rows);
+    student = {
+      id: results1.rows[0].student_id,
+      name: results1.rows[0].fname,
+      phone: results1.rows[0].phone_no,
+      gender: results1.rows[0].gender
+    }
+    console.log("Profile called student object passed = ", student);
+    res.render("profileStudent", { user: student });
+  })
 
+});
+
+router.post("/students/profileUpdate", checkNotAuthenticated, (req, res) => {
+  console.log("Student profile updated ");
+  student = {
+    id: req.body.id,
+    name: req.body.name,
+
+    phone: req.body.phone,
+    gender: req.body.gender
+  }
+  if (req.body.gender == 'male') {
+    student.gender = 'M';
+  }
+  else {
+    student.gender = 'F';
+  }
+  pool.query(
+    `UPDATE student SET phone_no = $1,gender = $3 WHERE student_id= $2`,
+    [student.phone, student.id, student.gender], (err, result) => {
+      res.redirect("/users/students/dashboard");
+    })
+})
+router.post("/admins/profile", checkNotAuthenticated, (req, res) => {
+  var adminID = req.user.id;
+  console.log("admin of user id called  == ", adminID)
+  pool.query(`SELECT * FROM administrator WHERE user_id = $1`, [adminID], (error1, results1) => {
+    if (error1) {
+      console.log(error1);
+    }
+    console.log(results1.rows);
+    admin = {
+      id: results1.rows[0].admin_id,
+      name: results1.rows[0].fname + results1.rows[0].lname,
+      phone: results1.rows[0].phone_no,
+
+    }
+    console.log("Profile called admin  object passed = ", admin);
+    res.render("profileAdmin", { user: admin });
+  })
+
+});
+router.post("/admins/profileUpdate", checkNotAuthenticated, (req, res) => {
+  console.log("admin profile updated ");
+  admin = {
+    id: req.body.id,
+    name: req.body.name,
+
+    phone: req.body.phone,
+
+  }
+
+  pool.query(
+    `UPDATE administrator SET phone_no = $1 where admin_id= $2`,
+    [admin.phone, admin.id], (err, result) => {
+      res.redirect("/users/admins/dashboard");
+    })
+})
 router.post("/profileUpdate", checkNotAuthenticated, (req, res) => {
   console.log("I did fill form ", req.body.jobRole);
   myUser = {
@@ -377,7 +496,7 @@ router.get("/feedback", checkNotAuthenticated, (req, res) => {
   res.render("feedback");
 });
 
-router.post("/feedback",checkNotAuthenticated, (req, res) => {
+router.post("/feedback", checkNotAuthenticated, (req, res) => {
   let { name, email, comment } = req.body;
   pool.query(
     `INSERT INTO feedbacks (name, email, comment)
@@ -394,4 +513,166 @@ router.post("/feedback",checkNotAuthenticated, (req, res) => {
   );
 });
 
+
+router.post("/students/hostelStudent", (req, res) => {
+  var studentID = req.user.id;
+  pool.query(`SELECT * FROM student WHERE user_id = $1`, [studentID], (error1, results1) => {
+    console.log(results1.rows);
+    student = {
+      id: results1.rows[0].student_id,
+      name: results1.rows[0].fname,
+      phone: results1.rows[0].phone_no,
+      gender: results1.rows[0].gender
+    }
+
+    pool.query(`SELECT * FROM hostel `, (err2, results2) => {
+      var hostels = [];
+      for (var i = 0; i < results2.rows.length; i++) {
+        hostel = {
+          id: results2.rows[i].hostel_id,
+          name: results2.rows[i].hostel_name,
+          no_of_rooms: results2.rows[i].no_of_rooms
+        }
+        hostels.push(hostel);
+      }
+      console.log("Profile called student object passed = ", student);
+      res.render("hostelStudent", { user: student, hostels: hostels });
+    })
+
+  })
+})
+router.post("/admins/hostelStudent", (req, res) => {
+  var adminID = req.user.id;
+  pool.query(`SELECT * FROM administrator WHERE user_id = $1`, [adminID], (error1, results1) => {
+    console.log(results1.rows);
+    admin = {
+      id: results1.rows[0].admin_id,
+      name: results1.rows[0].fname + results1.rows[0].lname,
+      phone: results1.rows[0].phone_no,
+
+    }
+
+    pool.query(`SELECT * FROM hostel `, (err2, results2) => {
+      var hostels = [];
+      for (var i = 0; i < results2.rows.length; i++) {
+        hostel = {
+          id: results2.rows[i].hostel_id,
+          name: results2.rows[i].hostel_name,
+          no_of_rooms: results2.rows[i].no_of_rooms
+        }
+        hostels.push(hostel);
+      }
+      console.log("view hostels  called for admin object passed = ", admin);
+      res.render("hostelAdmin", { user: admin, hostels: hostels });
+    })
+
+  })
+})
+
+router.post("/admins/addHostel", (req, res) => {
+  console.log(req.isAuthenticated());
+  pool.query(`SELECT * FROM administrator where user_id=$1`, [req.user.id], (err, results) => {
+    var admin = {
+      id: results.rows[0].admin_id,
+      name: results.rows[0].fname + results.rows[0].lname,
+      phone: results.rows[0].phone_no
+    }
+    console.log("admin add hostel called passed this object", admin)
+    res.render("addHostel", { user: admin, my_null_value: req.user.xyz });
+  })
+})
+router.post("/admins/addHostelByAdmin", (req, res) => {
+  console.log(req.isAuthenticated());
+
+  var hostel = {
+    name: req.body.myHostelName,
+    phone: req.body.myHostelPhone,
+    rooms: req.body.myHostelRooms,
+    admin_id: req.body.myUserId,
+    hostel_id: req.body.myHostelID
+  }
+  pool.query(`INSERT INTO hostel(hostel_name,phone_no,no_of_rooms,admin_id,hostel_id) VALUES ($1,$2,$3,$4,$5)`,
+    [hostel.name, hostel.phone, hostel.rooms, hostel.admin_id, hostel.hostel_id], (err1, results1) => {
+      if (err1) {
+        console.log(err1);
+      }
+      else {
+        console.log("Inserted successfully   ");
+      }
+      res.redirect("/users/admins/dashboard");
+    })
+})
+
+router.post("/admins/addStaff", (req, res) => {
+  console.log(req.isAuthenticated());
+  pool.query(`SELECT * FROM administrator where user_id=$1`, [req.user.id], (err, results) => {
+    var admin = {
+      id: results.rows[0].admin_id,
+      name: results.rows[0].fname + results.rows[0].lname,
+      phone: results.rows[0].phone_no
+    }
+    console.log("admin add staff called passed this object", admin)
+    res.render("addStaff", { user: admin, my_null_value: req.user.xyz });
+  })
+})
+
+
+router.post("/admins/addStaffByAdmin", (req, res) => {
+  console.log(req.isAuthenticated());
+  console.log("Admin is adding a staff member here!!")
+  var staff = {
+    staff_id: req.body.myStaffID,
+    staff_name: req.body.myStaffName,
+    contact_number: req.body.myStaffPhone,
+    gender: req.body.myStaffGender,
+    salary: req.body.myStaffSalary,
+    job_role: req.body.myStaffRole,
+    hostel_id: req.body.myStaffHostel
+  }
+  pool.query(`INSERT INTO staff(staff_id,staff_name,contact_number,gender,salary,job_role,hostel_id) 
+              VALUES ($1,$2,$3,$4,$5,$6,$7)`, [staff.staff_id, staff.staff_name, staff.contact_number, staff.gender, staff.salary, staff.job_role, staff.hostel_id],
+    (err1, results1) => {
+      if(err1){
+        console.log(err1)
+      }
+      else{
+        console.log("Staff added successfully");
+      }
+      res.redirect("/users/admins/dashboard");
+
+    })
+})
+
+router.post("/admins/staffAdmin",(req,res)=>{
+  var adminID = req.user.id;
+  pool.query(`SELECT * FROM administrator WHERE user_id = $1`, [adminID], (error1, results1) => {
+    console.log(results1.rows);
+    admin = {
+      id: results1.rows[0].admin_id,
+      name: results1.rows[0].fname + results1.rows[0].lname,
+      phone: results1.rows[0].phone_no,
+
+    }
+
+    pool.query(`SELECT * FROM staff `, (err2, results2) => {
+      var staff = [];
+      for (var i = 0; i < results2.rows.length; i++) {
+        staff_person = {
+          staff_id: results2.rows[i].staff_id,
+          staff_name: results2.rows[i].staff_name,
+          gender : results2.rows[i].gender,
+          salary : results2.rows[i].salary,
+          job_role : results2.rows[i].job_role,
+          hostel_id : results2.rows[i].hostel_id,
+          contact_number: results2.rows[i].contact_number
+        }
+        staff.push(staff_person);
+      }
+      console.log("view staff  called for staff object passed = ", staff);
+      res.render("staffViewAdmin", { user: admin, staff: staff});
+    })
+
+  })
+ 
+})
 module.exports = router;

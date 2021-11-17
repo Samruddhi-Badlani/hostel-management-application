@@ -5,7 +5,7 @@ CREATE TABLE solves(
 	no_hours int,
 	PRIMARY KEY(query_id,staff_id),
 	FOREIGN  KEY(staff_id) 
-	  REFERENCES warden(staff_id)
+	  REFERENCES staff(staff_id)
 	ON DELETE CASCADE
 	ON UPDATE CASCADE
 	);
