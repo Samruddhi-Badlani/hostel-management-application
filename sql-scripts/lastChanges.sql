@@ -132,3 +132,13 @@ INSERT INTO rent(paid_date,amount,student_id,admin_id) VALUES
 ('2020-08-13 14:15:06',6000,5,1),
 ('2020-01-19 09:15:06',2000,6,2);
 select * from rent;
+
+
+ALTER TABLE hostel
+ALTER COLUMN  phone_no TYPE VARCHAR(20);
+
+
+CREATE SEQUENCE my_serial AS integer START 1 OWNED BY hostel.hostel_id;
+
+ALTER TABLE hostel ALTER COLUMN hostel_id SET DEFAULT nextval('my_serial');
+

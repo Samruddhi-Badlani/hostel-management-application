@@ -334,7 +334,7 @@ function checkNotAuthenticated(req, res, next) {
   if (req.isAuthenticated()) {
     return next();
   }
-  res.redirect("/users/login");
+  res.redirect("/");
 }
 
 router.post("/profile", checkNotAuthenticated, (req, res) => {
@@ -540,5 +540,94 @@ router.post("/students/hostelStudent",(req,res)=>{
     })
    
   })
+})
+router.post("/admins/hostelStudent",(req,res)=>{
+  var adminID= req.user.id;
+  pool.query(`SELECT * FROM administrator WHERE user_id = $1`,[adminID],(error1,results1)=>{
+    console.log(results1.rows);
+    admin = { 
+      id : results1.rows[0].admin_id,
+      name : results1.rows[0].fname + results1.rows[0].lname,
+      phone : results1.rows[0].phone_no,
+    
+    }
+
+    pool.query(`SELECT * FROM hostel `,(err2,results2)=>{
+      var hostels =[] ;
+      for(var i = 0 ; i < results2.rows.length ; i++){
+      hostel = {
+        id : results2.rows[i].hostel_id,
+        name : results2.rows[i].hostel_name,
+        no_of_rooms : results2.rows[i].no_of_rooms
+      }
+      hostels.push(hostel);
+    }
+      console.log("view hostels  called for admin object passed = ",admin);
+      res.render("hostelAdmin", { user: admin,hostels: hostels });
+    })
+   
+  })
+})
+
+router.post("/admins/addHostel",(req,res)=>{
+  console.log(req.isAuthenticated());
+  pool.query(`SELECT * FROM administrator where user_id=$1`,[req.user.id],(err,results)=>{
+    var admin = {
+      id : results.rows[0].admin_id,
+      name : results.rows[0].fname + results.rows[0].lname,
+      phone : results.rows[0].phone_no
+    }
+    console.log("admin add hostel called passed this object",admin)
+    res.render("addHostel", { user: admin, my_null_value: req.user.xyz });
+  })
+})
+router.post("/admins/addHostelByAdmin",(req,res)=>{
+  console.log(req.isAuthenticated());
+
+  var hostel = {
+    name : req.body.myHostelName,
+    phone : req.body.myHostelPhone,
+    rooms : req.body.myHostelRooms,
+    admin_id : req.body.myUserId,
+    hostel_id : req.body.myHostelID
+  }
+  pool.query(`INSERT INTO hostel(hostel_name,phone_no,no_of_rooms,admin_id,hostel_id) VALUES ($1,$2,$3,$4,$5)`,
+  [hostel.name,hostel.phone,hostel.rooms,hostel.admin_id,hostel.hostel_id],(err1,results1)=>{
+    if(err1){
+      console.log(err1);
+    }
+    else{
+    console.log("Inserted successfully   ");
+    }
+    res.redirect("/users/admins/dashboard");
+  } )
+})
+
+router.post("/admins/addStaff",(req,res)=>{
+  console.log(req.isAuthenticated());
+  pool.query(`SELECT * FROM administrator where user_id=$1`,[req.user.id],(err,results)=>{
+    var admin = {
+      id : results.rows[0].admin_id,
+      name : results.rows[0].fname + results.rows[0].lname,
+      phone : results.rows[0].phone_no
+    }
+    console.log("admin add staff called passed this object",admin)
+    res.render("addStaff", { user: admin, my_null_value: req.user.xyz });
+  })
+})
+
+
+router.post("/admins/addStaffByAdmin",(req,res)=>{
+  console.log(req.isAuthenticated());
+  console.log("Admin is adding a staff member here!!")
+  var staff = {
+    staff_id : req.body.myStaffID,
+    staff_name : req.body.myStaffName,
+    contact_number : req.body.myStaffPhone,
+    gender: req.body.myStaffGender,
+    salary : req.body.myStaffSalary,
+    job_role : req.body.myStaffRole,
+    hostel_id : req.body.myStaffHostel
+  }
 })
 module.exports = router;

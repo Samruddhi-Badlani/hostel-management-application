@@ -70,7 +70,7 @@
        
          
         <a href="/users/admins/logout"  class="logHeadItem">Logout</a>
-        <form action="/users/admins/profile" method="POST" class="logHeadItem" >
+        <form action="/users/students/profile" method="POST" class="logHeadItem" >
           <input  type='hidden'   name='myUserId' value='<%=user.id %>'>
           <input  type='hidden' name='myUserName' value = '<%= user.name %>' >
           <input type='hidden' name='myUserEmail' value = '<%= user.email %>' >
@@ -99,20 +99,36 @@
       
     </form>
 
-    <form action="/users/admins/addStaff" method="POST" class="logHeadItem" >
-      <input  type='hidden'   name='myUserId' value='<%=user.id %>'>
-      <input  type='hidden' name='myUserName' value = '<%= user.name %>' >
-      <input type='hidden' name='myUserEmail' value = '<%= user.email %>' >
-      <input type='hidden' name='myUserPhone' value = '<%= user.phone %>' >
-      <input type='hidden' name='myUserCity' value = '<%= user.city %>' >
-      <input type='hidden' name='myUserState' value = '<%= user.state %>' >
-      <input type='hidden' name='myUserCountry' value = '<%= user.country %>' > 
-      <input type='hidden' name='myUserAddress' value='<%= user.address %>' > 
-      <input type='hidden' name='myUserJobRole' value = '<%= user.job_role %>' >
-      <input type='hidden' name='myUserCost' value = '<%= user.cost %>' >
-      <input type='hidden' name='myUserCapacity' value = '<%= user.capacity %>' >
+    <form action="/users/admins/addHostel" method="POST" class="logHeadItem" >
+        <input  type='hidden'   name='myUserId' value='<%=user.id %>'>
+        <input  type='hidden' name='myUserName' value = '<%= user.name %>' >
+        <input type='hidden' name='myUserEmail' value = '<%= user.email %>' >
+        <input type='hidden' name='myUserPhone' value = '<%= user.phone %>' >
+        <input type='hidden' name='myUserCity' value = '<%= user.city %>' >
+        <input type='hidden' name='myUserState' value = '<%= user.state %>' >
+        <input type='hidden' name='myUserCountry' value = '<%= user.country %>' > 
+        <input type='hidden' name='myUserAddress' value='<%= user.address %>' > 
+        <input type='hidden' name='myUserJobRole' value = '<%= user.job_role %>' >
+        <input type='hidden' name='myUserCost' value = '<%= user.cost %>' >
+        <input type='hidden' name='myUserCapacity' value = '<%= user.capacity %>' >
+      
+    </form>
 
-  </form>
+    
+    <form action="/users/admins/addStaff" method="POST" class="logHeadItem" >
+        <input  type='hidden'   name='myUserId' value='<%=user.id %>'>
+        <input  type='hidden' name='myUserName' value = '<%= user.name %>' >
+        <input type='hidden' name='myUserEmail' value = '<%= user.email %>' >
+        <input type='hidden' name='myUserPhone' value = '<%= user.phone %>' >
+        <input type='hidden' name='myUserCity' value = '<%= user.city %>' >
+        <input type='hidden' name='myUserState' value = '<%= user.state %>' >
+        <input type='hidden' name='myUserCountry' value = '<%= user.country %>' > 
+        <input type='hidden' name='myUserAddress' value='<%= user.address %>' > 
+        <input type='hidden' name='myUserJobRole' value = '<%= user.job_role %>' >
+        <input type='hidden' name='myUserCost' value = '<%= user.cost %>' >
+        <input type='hidden' name='myUserCapacity' value = '<%= user.capacity %>' >
+  
+    </form>
     </nav>
     <div class="container">
       <div class="row pt-4 pl-4 pr-4">
@@ -135,21 +151,43 @@
 
       <form action="/users/admins/addHostel" method="post">
         
-      <input id="addHostel" name="addHostel" class="btn text-white btn-primary col-12" type="submit" value="Add hostel"></button><br/><br/>
-    </form>
-
-    <form action="/users/admins/addStaff" method="post">
-        
-      <input id="addHostel" name="addStaff" class="btn text-white btn-primary col-12" type="submit" value="Add Staff"></button><br/><br/>
-    </form>
+        <input id="addHostel" name="addHostel" class="btn text-white btn-primary col-12" type="submit" value="Add hostel"></button><br/><br/>
+      </form>
          
+      <form action="/users/admins/addStaff" method="post">
+        
+        <input id="addHostel" name="addStaff" class="btn text-white btn-primary col-12" type="submit" value="Add Staff"></button><br/><br/>
+      </form>
           
           <!--<button id="viewApplicationStatus" class="btn text-white btn-primary col-12">View Application Status</button><br/><br/>-->
         </div>
         <div class="col-9">
-          <div id="noticeBoard" class="border p-5 bg-light">
           
-          </div>
+            <div class="row p-2">
+                <div class="col-4">Hostel ID</div>
+                <div class="col-4">Hostel Name</div>
+                <div class="col-4">Number of rooms</div>
+                </div>
+
+                <% for(var i=0 ; i < hostels.length ; i++){ %>
+                    <div class="row p-2">
+                    
+                        
+                            <div class="col-4">
+                                <%= hostels[i].id %>
+                            </div>
+                            <div class="col-4">
+                                <%= hostels[i].name %>
+                            </div>
+                            <div class="col-4">
+                                <%= hostels[i].no_of_rooms %>
+                            </div>
+                     
+                   
+                    </div>
+
+                    <% } %>
+        </div>
         </div>
         
         

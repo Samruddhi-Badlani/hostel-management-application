@@ -70,7 +70,7 @@
        
          
         <a href="/users/admins/logout"  class="logHeadItem">Logout</a>
-        <form action="/users/admins/profile" method="POST" class="logHeadItem" >
+        <form action="/users/students/profile" method="POST" class="logHeadItem" >
           <input  type='hidden'   name='myUserId' value='<%=user.id %>'>
           <input  type='hidden' name='myUserName' value = '<%= user.name %>' >
           <input type='hidden' name='myUserEmail' value = '<%= user.email %>' >
@@ -99,20 +99,21 @@
       
     </form>
 
+    
     <form action="/users/admins/addStaff" method="POST" class="logHeadItem" >
-      <input  type='hidden'   name='myUserId' value='<%=user.id %>'>
-      <input  type='hidden' name='myUserName' value = '<%= user.name %>' >
-      <input type='hidden' name='myUserEmail' value = '<%= user.email %>' >
-      <input type='hidden' name='myUserPhone' value = '<%= user.phone %>' >
-      <input type='hidden' name='myUserCity' value = '<%= user.city %>' >
-      <input type='hidden' name='myUserState' value = '<%= user.state %>' >
-      <input type='hidden' name='myUserCountry' value = '<%= user.country %>' > 
-      <input type='hidden' name='myUserAddress' value='<%= user.address %>' > 
-      <input type='hidden' name='myUserJobRole' value = '<%= user.job_role %>' >
-      <input type='hidden' name='myUserCost' value = '<%= user.cost %>' >
-      <input type='hidden' name='myUserCapacity' value = '<%= user.capacity %>' >
-
-  </form>
+        <input  type='hidden'   name='myUserId' value='<%=user.id %>'>
+        <input  type='hidden' name='myUserName' value = '<%= user.name %>' >
+        <input type='hidden' name='myUserEmail' value = '<%= user.email %>' >
+        <input type='hidden' name='myUserPhone' value = '<%= user.phone %>' >
+        <input type='hidden' name='myUserCity' value = '<%= user.city %>' >
+        <input type='hidden' name='myUserState' value = '<%= user.state %>' >
+        <input type='hidden' name='myUserCountry' value = '<%= user.country %>' > 
+        <input type='hidden' name='myUserAddress' value='<%= user.address %>' > 
+        <input type='hidden' name='myUserJobRole' value = '<%= user.job_role %>' >
+        <input type='hidden' name='myUserCost' value = '<%= user.cost %>' >
+        <input type='hidden' name='myUserCapacity' value = '<%= user.capacity %>' >
+  
+    </form>
     </nav>
     <div class="container">
       <div class="row pt-4 pl-4 pr-4">
@@ -135,21 +136,40 @@
 
       <form action="/users/admins/addHostel" method="post">
         
-      <input id="addHostel" name="addHostel" class="btn text-white btn-primary col-12" type="submit" value="Add hostel"></button><br/><br/>
-    </form>
+        <input id="addHostel" name="addHostel" class="btn text-white btn-primary col-12" type="submit" value="Add hostel"></button><br/><br/>
+      </form>
 
-    <form action="/users/admins/addStaff" method="post">
+      <form action="/users/admins/addStaff" method="post">
         
-      <input id="addHostel" name="addStaff" class="btn text-white btn-primary col-12" type="submit" value="Add Staff"></button><br/><br/>
-    </form>
+        <input id="addHostel" name="addStaff" class="btn text-white btn-primary col-12" type="submit" value="Add Staff"></button><br/><br/>
+      </form>
          
           
           <!--<button id="viewApplicationStatus" class="btn text-white btn-primary col-12">View Application Status</button><br/><br/>-->
         </div>
         <div class="col-9">
-          <div id="noticeBoard" class="border p-5 bg-light">
-          
-          </div>
+            <form action="/users/admins/addHostelByAdmin" method="post">
+                <input  type='hidden'   name='myUserId' value='<%=user.id %>'>
+                <div class="myInputBox">
+                    <label class="labelFields" for="myHostelID">Hostel ID</label>
+                    <input class="inputFields" type="number" name="myHostelID" id="myHostelID" required>
+                    </div>
+                <div class="myInputBox">
+                <label class="labelFields" for="myHostelName">Hostel Name</label>
+                <input class="inputFields" type="text" name="myHostelName" id="myHostelName" required>
+                </div>
+                <div class="myInputBox">
+                <label class="labelFields" for="myHostelPhone">Hostel Phone Number</label>
+                <input class="inputFields" type="tel" name="myHostelPhone" id="myHostelPhone"  pattern="[+]{1}[0-9]{11,14}" required>
+                </div>
+                <div class="myInputBox">
+                <label class="labelFields" for="myHostelRooms">Number of rooms</label>
+                <input class="inputFields" type="number" name="myHostelRooms" id="myHostelRooms" min="1" required>
+                </div>
+                <div class="myInputBox">
+                <input type="submit" class="inputFields" value="Add" id="submitHostel">
+                </div>
+            </form>
         </div>
         
         
