@@ -482,9 +482,18 @@ router.post("/students/hostelStudent",(req,res)=>{
       gender : results1.rows[0].gender
     }
 
-    pool.query(`SELECT * FROM hostel`,(err2,results2)=>{
+    pool.query(`SELECT * FROM hostel `,(err2,results2)=>{
+      var hostels =[] ;
+      for(var i = 0 ; i < results2.rows.length ; i++){
+      hostel = {
+        id : results2.rows[i].hostel_id,
+        name : results2.rows[i].hostel_name,
+        no_of_rooms : results2.rows[i].no_of_rooms
+      }
+      hostels.push(hostel);
+    }
       console.log("Profile called student object passed = ",student);
-      res.render("hostelStudent", { user: student });
+      res.render("hostelStudent", { user: student,hostels: hostels });
     })
    
   })
