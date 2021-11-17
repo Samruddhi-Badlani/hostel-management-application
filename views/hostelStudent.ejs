@@ -99,55 +99,7 @@
             </div>
             <div class="col-9">
                 <div id="noticeBoard" class="border p-5 bg-light">
-                    <div class="flex-item-Head"> <img src="/css/images/profile-img.png" alt="" width="40px"
-                            height="40px"></div>
-                    <div class="flex-item-Head"><span>
-                            <%=user.name %>
-                        </span></div>
-
-                    <form action="/users/students/profileUpdate" method="POST" class="GetInfoForm">
-
-                        <input type="hidden" name='id' value=<%=user.id %>>
-                        <div class="myInputBox">
-                            <label class="labelFields" for="name">Roll Number</label>
-                            <input class="inputFields" type="text" name='rollNumber' id='rollNumber' required value='<%=user.id %>'
-                                disabled>
-
-                        </div>
-                        <div class="myInputBox">
-                            <label class="labelFields" for="name">Name</label>
-                            <input class="inputFields" type="text" name='name' id='name' required
-                                value='<%=user.name %>' disabled>
-
-                        </div>
-
-
-
-                        <div class="myInputBox">
-                            <label class="labelFields" for="phone">Phone</label>
-
-                            <input class="inputFields" type="tel" name='phone' id='phone' pattern="[+]{1}[0-9]{11,14}"
-                                required value='<%=user.phone %>'>
-                        </div>
-                        <div class="myInputBox">
-                            <label class="labelFields" for="gender">Gender</label>
-                            <% if(user.gender == 'F') { %> 
-                                <input class="inputFields" type="text" value='Female' disabled>
-                            <% } else { %>
-                            
-                                <input class="inputFields" type="text" value='Male' disabled>
-                            <% } %>
-                            
-                            <input  class="inputFields" type="radio" name="gender" value="male" required> Male<br>
-                            <input  class="inputFields" type="radio" name="gender" value="female" required> Female<br>
-                            
-                        </div>
-
-
-
-
-                        <input type="submit" value="Save" id="submitProfile">
-                    </form>
+                    
                 </div>
 
             </div>

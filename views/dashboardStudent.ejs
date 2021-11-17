@@ -84,6 +84,20 @@
           <input type='hidden' name='myUserCapacity' value = '<%= user.capacity %>' >
         <input type="image" class="myProfileImage" src="/css/images/profile-img.png" alt="Submit" style="float: right;">
       </form>
+      <form action="/users/students/hostelStudent" method="POST" class="logHeadItem" >
+        <input  type='hidden'   name='myUserId' value='<%=user.id %>'>
+        <input  type='hidden' name='myUserName' value = '<%= user.name %>' >
+        <input type='hidden' name='myUserEmail' value = '<%= user.email %>' >
+        <input type='hidden' name='myUserPhone' value = '<%= user.phone %>' >
+        <input type='hidden' name='myUserCity' value = '<%= user.city %>' >
+        <input type='hidden' name='myUserState' value = '<%= user.state %>' >
+        <input type='hidden' name='myUserCountry' value = '<%= user.country %>' > 
+        <input type='hidden' name='myUserAddress' value='<%= user.address %>' > 
+        <input type='hidden' name='myUserJobRole' value = '<%= user.job_role %>' >
+        <input type='hidden' name='myUserCost' value = '<%= user.cost %>' >
+        <input type='hidden' name='myUserCapacity' value = '<%= user.capacity %>' >
+      
+    </form>
     </nav>
     <div class="container">
       <div class="row pt-4 pl-4 pr-4">
@@ -100,7 +114,10 @@
             <input type="hidden" id="profileView" name="profileView" value="true" >
           <input id="showStudentDetails" name="showStudentDetails" class="btn text-white btn-primary col-12" type="submit" value="View Details"></button><br/><br/>
         </form>
-          <button id="showAttendance" class="btn text-white btn-primary col-12">View Attendance</button><br/><br/>
+        <form action="/users/students/hostelStudent" method="post">
+          <input type="submit" id="showHostels" class="btn text-white btn-primary col-12" value="View Hostel Information"></button><br/><br/>
+      </form>
+         
           <button id="apply" class="btn btn-primary text-white col-12">Apply</button><br/><br/>
           <button id="viewInventory" class="btn text-white btn-primary col-12">View Hostel Inventory</button><br/><br/>
           <button id="viewFines" class="btn text-white btn-primary col-12">View Fines</button><br/><br/>

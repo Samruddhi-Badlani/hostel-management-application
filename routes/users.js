@@ -470,4 +470,23 @@ router.post("/feedback",checkNotAuthenticated, (req, res) => {
   );
 });
 
+
+router.post("/students/hostelStudent",(req,res)=>{
+  var studentID= req.user.id;
+  pool.query(`SELECT * FROM student WHERE user_id = $1`,[studentID],(error1,results1)=>{
+    console.log(results1.rows);
+    student = {
+      id : results1.rows[0].student_id,
+      name : results1.rows[0].fname,
+      phone : results1.rows[0].phone_no,
+      gender : results1.rows[0].gender
+    }
+
+    pool.query(`SELECT * FROM hostel`,(err2,results2)=>{
+      console.log("Profile called student object passed = ",student);
+      res.render("hostelStudent", { user: student });
+    })
+   
+  })
+})
 module.exports = router;
