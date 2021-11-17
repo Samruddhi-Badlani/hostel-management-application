@@ -151,5 +151,8 @@ ADD COLUMN user_id INTEGER;
 ALTER TABLE hostel
 ADD COLUMN type VARCHAR(30);
 
+ALTER TABLE vaccination_certificate
+ADD certificate_file bytea;
+
 
 

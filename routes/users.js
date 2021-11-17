@@ -136,8 +136,12 @@ router.get("/admins/dashboard", checkNotAuthenticated, (req, res) => {
       name: results.rows[0].fname + results.rows[0].lname,
       phone: results.rows[0].phone_no
     }
-    console.log("admin dashboard passed this object", admin)
-    res.render("dashboardAdmin", { user: admin, my_null_value: req.user.xyz });
+    pool.query('SELECT * FROM application',(err2,results2)=>{
+      console.log("admin dashboard passed this object", admin)
+      console.log("Notification = ",results2.rows.length)
+    res.render("dashboardAdmin", { user: admin, my_null_value: req.user.xyz,notificationNumber : results2.rows.length });
+    })
+    
   })
 
 });
@@ -533,7 +537,8 @@ router.post("/students/hostelStudent", (req, res) => {
           id: results2.rows[i].hostel_id,
           name: results2.rows[i].hostel_name,
           no_of_rooms: results2.rows[i].no_of_rooms,
-          type: results2.rows[i].type
+          type: results2.rows[i].type,
+          phone:results2.rows[i].phone_no
         }
         hostels.push(hostel);
       }
@@ -654,7 +659,8 @@ router.post("/admins/hostelStudent", (req, res) => {
           id: results2.rows[i].hostel_id,
           name: results2.rows[i].hostel_name,
           no_of_rooms: results2.rows[i].no_of_rooms,
-          type: results2.rows[i].type
+          type: results2.rows[i].type,
+          phone : results2.rows[i].phone_no
         }
         hostels.push(hostel);
       }
@@ -786,6 +792,25 @@ router.post("/students/applyRoomSubmitBoth", (req, res) => {
     console.log("Application received by student id = ", student_id, " for room ", room_id);
     res.redirect("/users/students/dashboard");
   })
+
+})
+
+router.get('/admins/notification',(req,res)=>{
+  console.log(req.isAuthenticated());
+  pool.query(`SELECT * FROM administrator where user_id=$1`, [req.user.id], (err, results) => {
+    var admin = {
+      id: results.rows[0].admin_id,
+      name: results.rows[0].fname + results.rows[0].lname,
+      phone: results.rows[0].phone_no
+    }
+    pool.query('SELECT * FROM application',(err2,results2)=>{
+      console.log("admin dashboard passed this object", admin)
+      console.log("Notifications =  ",results2.rows.length)
+    res.render("adminNotification", { user: admin, my_null_value: req.user.xyz,notificationNumber : results2.rows.length ,applications : results2.rows });
+    })
+    
+  })
+
 
 })
 module.exports = router;

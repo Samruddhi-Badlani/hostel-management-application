@@ -6,7 +6,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=IM+Fell+DW+Pica:ital@1&display=swap" rel="stylesheet">
 
-
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.7.0/css/font-awesome.min.css">
    
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
@@ -16,6 +16,7 @@
      <link rel="stylesheet" href="/css/dashboard.css">
     <link rel="stylesheet" href="/css/ecobrick-profile.css">
     <link rel="stylesheet" href="css/student_view_style.css">
+    <link rel="stylesheet" href="/css/notification.css">
     <title>Hostel Management System</title>
   </head>
   <body>
@@ -84,6 +85,12 @@
           <input type='hidden' name='myUserCapacity' value = '<%= user.capacity %>' >
         <input type="image" class="myProfileImage" src="/css/images/profile-img.png" alt="Submit" style="float: right;">
       </form>
+      <div><a href="/users/admins/notification" class="notification" ><i class="fa fa-bell " style="font-size: 28px;" aria-hidden="true"></i>
+        <% if( notificationNumber != 0) { %>
+          <% console.log("notification")%>
+          <span class="badge" ><%= notificationNumber %></span>
+          <% } %>
+        </a></div>
       <form action="/users/admins/hostelStudent" method="POST" class="logHeadItem" >
         <input  type='hidden'   name='myUserId' value='<%=user.id %>'>
         <input  type='hidden' name='myUserName' value = '<%= user.name %>' >

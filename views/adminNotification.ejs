@@ -66,7 +66,7 @@
           </form>
         </div>
         <div id="logHead">
-        
+       
        
          
         <a href="/users/admins/logout"  class="logHeadItem">Logout</a>
@@ -84,7 +84,6 @@
           <input type='hidden' name='myUserCapacity' value = '<%= user.capacity %>' >
         <input type="image" class="myProfileImage" src="/css/images/profile-img.png" alt="Submit" style="float: right;">
       </form>
-      <div><a href="/users/admins/notification" class="notification" style="color: black;"><i class="fa fa-bell " style="font-size: 28px;" aria-hidden="true"></i></a></div>
       <form action="/users/admins/hostelStudent" method="POST" class="logHeadItem" >
         <input  type='hidden'   name='myUserId' value='<%=user.id %>'>
         <input  type='hidden' name='myUserName' value = '<%= user.name %>' >
@@ -114,6 +113,21 @@
       <input type='hidden' name='myUserCapacity' value = '<%= user.capacity %>' >
 
   </form>
+
+  <form action="/users/admins/staffAdmin" method="POST" class="logHeadItem" >
+    <input  type='hidden'   name='myUserId' value='<%=user.id %>'>
+    <input  type='hidden' name='myUserName' value = '<%= user.name %>' >
+    <input type='hidden' name='myUserEmail' value = '<%= user.email %>' >
+    <input type='hidden' name='myUserPhone' value = '<%= user.phone %>' >
+    <input type='hidden' name='myUserCity' value = '<%= user.city %>' >
+    <input type='hidden' name='myUserState' value = '<%= user.state %>' >
+    <input type='hidden' name='myUserCountry' value = '<%= user.country %>' > 
+    <input type='hidden' name='myUserAddress' value='<%= user.address %>' > 
+    <input type='hidden' name='myUserJobRole' value = '<%= user.job_role %>' >
+    <input type='hidden' name='myUserCost' value = '<%= user.cost %>' >
+    <input type='hidden' name='myUserCapacity' value = '<%= user.capacity %>' >
+
+</form>
     </nav>
     <div class="container">
       <div class="row pt-4 pl-4 pr-4">
@@ -122,46 +136,40 @@
         </div>
       </div>
       <hr class="mt-0">
+      <h1>Applications received for Rooms </h1>
+
+      <% if(applications.length <=0) {%>
+        <h4>You do not have any Notifications and no forms received yet!!</h4>
+      <% } %>
       
-      <div class="row p-4">
-        <div class="col-3">
-          <div id="adminDetailBox" style="display: none;"></div>
-          <form action="/users/admins/profile" method="post">
-            <input type="hidden" id="profileView" name="profileView" value="true" >
-          <input id="showStudentDetails" name="showStudentDetails" class="btn text-white btn-primary col-12" type="submit" value="View Details"></button><br/><br/>
-        </form>
-        <form action="/users/admins/hostelStudent" method="post">
-          <input type="submit" id="showHostels" class="btn text-white btn-primary col-12" value="View Hostel Information"></button><br/><br/>
-      </form>
-
-      <form action="/users/admins/addHostel" method="post">
-        
-      <input id="addHostel" name="addHostel" class="btn text-white btn-primary col-12" type="submit" value="Add hostel"></button><br/><br/>
-    </form>
-
-    <form action="/users/admins/addStaff" method="post">
-        
-      <input id="addHostel" name="addStaff" class="btn text-white btn-primary col-12" type="submit" value="Add Staff"></button><br/><br/>
-    </form>
-
-    <form action="/users/admins/staffAdmin" method="post">
-        <input type="submit" id="showStaff" class="btn text-white btn-primary col-12" value="View Staff Information"></button><br/><br/>
-    </form>
-         
-          
-          <!--<button id="viewApplicationStatus" class="btn text-white btn-primary col-12">View Application Status</button><br/><br/>-->
+      <div class="row p-2">
+        <div class="col-2">Application ID</div>
+        <div class="col-2">Student ID</div>
+        <div class="col-2">Room ID</div>
+       
         </div>
-        <div class="col-9">
-          <div id="noticeBoard" class="border p-5 bg-light">
-          
-          </div>
-        </div>
-        
-        
-  
-     
-      
-      </div>
+
+        <% for(var i=0 ; i < applications.length ; i++){ %>
+            <div class="row p-2">
+            
+                
+                    <div class="col-2">
+                        <%= applications[i].application_id %>
+                    </div>
+                    <div class="col-2">
+                        <%= applications[i].student_id %>
+                    </div>
+                    <div class="col-2">
+                        <%= applications[i].room_no %>
+                    </div>
+                    
+                   
+             
+             
+           
+            </div>
+
+            <% } %>
     </div>
     <script src="/js/dashboardStudent.js"></script>
   </body>
