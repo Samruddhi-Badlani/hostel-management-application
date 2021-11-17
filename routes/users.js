@@ -57,7 +57,8 @@ router.get("/students/dashboard", checkNotAuthenticated, (req, res) => {
       student = {
         id : results1.rows[0].student_id,
         name : results1.rows[0].fname,
-        phone : results1.rows[0].phone_no
+        phone : results1.rows[0].phone_no,
+        gender : results1.rows[0].gender
       }
       console.log("Student dashboard called student object passed= ",student);
       res.render("dashboardStudent", {user: student, my_null_value: req.user.xyz , hostels : hostels ,profileView:false});
@@ -85,7 +86,8 @@ router.post("/students/dashboard", checkNotAuthenticated, (req, res) => {
       student = {
         id : results1.rows[0].student_id,
         name : results1.rows[0].fname,
-        phone : results1.rows[0].phone_no
+        phone : results1.rows[0].phone_no,
+        gender : results1.rows[0].gender
       }
       console.log("Student dashboard called student object passed= ",student);
       res.render("dashboardStudent", {user: student, my_null_value: req.user.xyz , hostels : hostels ,profileView : req.body.profileView});
@@ -359,7 +361,8 @@ router.post("/students/profile", checkNotAuthenticated, (req, res) => {
     student = {
       id : results1.rows[0].student_id,
       name : results1.rows[0].fname,
-      phone : results1.rows[0].phone_no
+      phone : results1.rows[0].phone_no,
+      gender : results1.rows[0].gender
     }
     console.log("Profile called student object passed = ",student);
     res.render("profileStudent", { user: student });
@@ -373,11 +376,18 @@ router.post("/students/profileUpdate",checkNotAuthenticated,(req,res)=>{
     id: req.body.id,
     name: req.body.name,
     
-    phone: req.body.phone
+    phone: req.body.phone,
+    gender : req.body.gender
+  }
+  if(req.body.gender == 'male'){
+    student.gender='M';
+  }
+  else{
+    student.gender='F';
   }
   pool.query(
-    `UPDATE student SET phone_no = $1 WHERE student_id= $2`,
-    [student.phone,student.id],(err,result)=>{
+    `UPDATE student SET phone_no = $1,gender = $3 WHERE student_id= $2`,
+    [student.phone,student.id,student.gender],(err,result)=>{
       res.redirect("/users/students/dashboard");
     })
 })

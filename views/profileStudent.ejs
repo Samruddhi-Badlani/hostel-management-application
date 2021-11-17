@@ -128,8 +128,19 @@
                             <input class="inputFields" type="tel" name='phone' id='phone' pattern="[+]{1}[0-9]{11,14}"
                                 required value='<%=user.phone %>'>
                         </div>
-
-
+                        <div class="myInputBox">
+                            <label class="labelFields" for="gender">Gender</label>
+                            <% if(user.gender == 'F') { %> 
+                                <input class="inputFields" type="text" value='Female' disabled>
+                            <% } else { %>
+                            
+                                <input class="inputFields" type="text" value='Male' disabled>
+                            <% } %>
+                            
+                            <input  class="inputFields" type="radio" name="gender" value="male" required> Male<br>
+                            <input  class="inputFields" type="radio" name="gender" value="female" required> Female<br>
+                            
+                        </div>
 
 
 
