@@ -367,6 +367,21 @@ router.post("/students/profile", checkNotAuthenticated, (req, res) => {
   
 });
 
+router.post("/students/profileUpdate",checkNotAuthenticated,(req,res)=>{
+  console.log("Student profile updated ");
+  student = {
+    id: req.body.id,
+    name: req.body.name,
+    
+    phone: req.body.phone
+  }
+  pool.query(
+    `UPDATE student SET phone_no = $1 WHERE student_id= $2`,
+    [student.phone,student.id],(err,result)=>{
+      res.redirect("/users/students/dashboard");
+    })
+})
+
 router.post("/profileUpdate", checkNotAuthenticated, (req, res) => {
   console.log("I did fill form ", req.body.jobRole);
   myUser = {
