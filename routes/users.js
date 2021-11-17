@@ -130,7 +130,16 @@ router.get("/students/hostels",checkNotAuthenticated,(req,res)=>{
 })
 router.get("/admins/dashboard", checkNotAuthenticated, (req, res) => {
   console.log(req.isAuthenticated());
-  res.render("dashboardAdmin", { user: req.user, my_null_value: req.user.xyz });
+  pool.query(`SELECT * FROM administrator where user_id=$1`,[req.user.id],(err,results)=>{
+    var admin = {
+      id : results.rows[0].admin_id,
+      name : results.rows[0].fname + results.rows[0].lname,
+      phone : results.rows[0].phone_no
+    }
+    console.log("admin dashboard passed this object",admin)
+    res.render("dashboardAdmin", { user: admin, my_null_value: req.user.xyz });
+  })
+  
 });
 router.get("/logout", (req, res) => {
   req.logout();
@@ -391,7 +400,41 @@ router.post("/students/profileUpdate",checkNotAuthenticated,(req,res)=>{
       res.redirect("/users/students/dashboard");
     })
 })
-
+router.post("/admins/profile", checkNotAuthenticated, (req, res) => {
+  var adminID= req.user.id;
+  console.log("admin of user id called  == ",adminID)
+  pool.query(`SELECT * FROM administrator WHERE user_id = $1`,[adminID],(error1,results1)=>{
+    if(error1){
+      console.log(error1);
+    }
+    console.log(results1.rows);
+    admin = {
+      id : results1.rows[0].admin_id,
+      name : results1.rows[0].fname + results1.rows[0].lname,
+      phone : results1.rows[0].phone_no,
+ 
+    }
+    console.log("Profile called admin  object passed = ",admin);
+    res.render("profileAdmin", { user: admin });
+  })
+  
+});
+router.post("/admins/profileUpdate",checkNotAuthenticated,(req,res)=>{
+  console.log("admin profile updated ");
+  admin = {
+    id: req.body.id,
+    name: req.body.name,
+    
+    phone: req.body.phone,
+  
+  }
+ 
+  pool.query(
+    `UPDATE administrator SET phone_no = $1 where admin_id= $2`,
+    [admin.phone,admin.id],(err,result)=>{
+      res.redirect("/users/admins/dashboard");
+    })
+})
 router.post("/profileUpdate", checkNotAuthenticated, (req, res) => {
   console.log("I did fill form ", req.body.jobRole);
   myUser = {

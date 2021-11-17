@@ -83,48 +83,52 @@
         <div class="row p-4">
             <div class="col-3">
                 <div id="studentDetailBox" style="display: none;"></div>
-                <form action="/users/students/profile" method="post">
+                <form action="/users/admins/profile" method="post">
                     <input type="hidden" id="profileView" name="profileView" value="true">
                     <input id="showStudentDetails" name="showStudentDetails" class="btn text-white btn-primary col-12"
                         type="submit" value="View Details"></button><br /><br />
                 </form>
-                <form action="/users/students/hostelStudent" method="post">
-                    <input type="submit" id="showHostels" class="btn text-white btn-primary col-12"
-                        value="View Hostel Information"></button><br /><br />
+                <form action="/users/admins/hostelStudent" method="post">
+                    <input type="submit" id="showHostels" class="btn text-white btn-primary col-12" value="View Hostel Information"></button><br/><br/>
                 </form>
-                
+               
                 <!--<button id="viewApplicationStatus" class="btn text-white btn-primary col-12">View Application Status</button><br/><br/>-->
             </div>
             <div class="col-9">
+                <div id="noticeBoard" class="border p-5 bg-light">
+                    <div class="flex-item-Head"> <img src="/css/images/profile-img.png" alt="" width="40px"
+                            height="40px"></div>
+                    <div class="flex-item-Head"><span>
+                            <%=user.name %>
+                        </span></div>
 
-                <div class="row p-2">
-                    <div class="col-4">Hostel ID</div>
-                    <div class="col-4">Hostel Name</div>
-                    <div class="col-4">Number of rooms</div>
-                    </div>
+                    <form action="/users/admins/profileUpdate" method="POST" class="GetInfoForm">
 
-                    <% for(var i=0 ; i < hostels.length ; i++){ %>
-                        <div class="row p-2">
+                        <input type="hidden" name='id' value=<%=user.id %>>
                         
-                            
-                                <div class="col-4">
-                                    <%= hostels[i].id %>
-                                </div>
-                                <div class="col-4">
-                                    <%= hostels[i].name %>
-                                </div>
-                                <div class="col-4">
-                                    <%= hostels[i].no_of_rooms %>
-                                </div>
-                         
-                       
+                        <div class="myInputBox">
+                            <label class="labelFields" for="name">Name</label>
+                            <input class="inputFields" type="text" name='name' id='name' required
+                                value='<%=user.name %>' disabled>
+
                         </div>
 
-                        <% } %>
+
+
+                        <div class="myInputBox">
+                            <label class="labelFields" for="phone">Phone</label>
+
+                            <input class="inputFields" type="tel" name='phone' id='phone' pattern="[+]{1}[0-9]{11,14}"
+                                required value='<%=user.phone %>'>
+                        </div>
+                       
 
 
 
-                
+
+                        <input type="submit" value="Save" id="submitProfile">
+                    </form>
+                </div>
 
             </div>
         </div>
@@ -134,12 +138,12 @@
 
 
     </div>
-
+  
     </div>
     </div>
 
 
-
+   
 
 
 
