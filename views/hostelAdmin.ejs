@@ -158,35 +158,15 @@
         
         <input id="addHostel" name="addStaff" class="btn text-white btn-primary col-12" type="submit" value="Add Staff"></button><br/><br/>
       </form>
+
+      <form action="/users/admins/staffAdmin" method="post">
+        <input type="submit" id="showStaff" class="btn text-white btn-primary col-12" value="View Staff Information"></button><br/><br/>
+    </form>
           
           <!--<button id="viewApplicationStatus" class="btn text-white btn-primary col-12">View Application Status</button><br/><br/>-->
         </div>
         <div class="col-9">
-          
-            <div class="row p-2">
-                <div class="col-4">Hostel ID</div>
-                <div class="col-4">Hostel Name</div>
-                <div class="col-4">Number of rooms</div>
-                </div>
-
-                <% for(var i=0 ; i < hostels.length ; i++){ %>
-                    <div class="row p-2">
-                    
-                        
-                            <div class="col-4">
-                                <%= hostels[i].id %>
-                            </div>
-                            <div class="col-4">
-                                <%= hostels[i].name %>
-                            </div>
-                            <div class="col-4">
-                                <%= hostels[i].no_of_rooms %>
-                            </div>
-                     
-                   
-                    </div>
-
-                    <% } %>
+          <%- include('hostelAdminPartial') %>
         </div>
         </div>
         

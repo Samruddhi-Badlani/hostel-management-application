@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div class="row p-2">
+        <div class="col-4">Hostel ID</div>
+        <div class="col-4">Hostel Name</div>
+        <div class="col-4">Number of rooms</div>
+        </div>
+
+        <% for(var i=0 ; i < hostels.length ; i++){ %>
+            <div class="row p-2">
+            
+                
+                    <div class="col-4">
+                        <%= hostels[i].id %>
+                    </div>
+                    <div class="col-4">
+                        <%= hostels[i].name %>
+                    </div>
+                    <div class="col-4">
+                        <%= hostels[i].no_of_rooms %>
+                    </div>
+             
+           
+            </div>
+
+            <% } %>
+            
+</body>
+</html>

@@ -642,4 +642,37 @@ router.post("/admins/addStaffByAdmin", (req, res) => {
 
     })
 })
+
+router.post("/admins/staffAdmin",(req,res)=>{
+  var adminID = req.user.id;
+  pool.query(`SELECT * FROM administrator WHERE user_id = $1`, [adminID], (error1, results1) => {
+    console.log(results1.rows);
+    admin = {
+      id: results1.rows[0].admin_id,
+      name: results1.rows[0].fname + results1.rows[0].lname,
+      phone: results1.rows[0].phone_no,
+
+    }
+
+    pool.query(`SELECT * FROM staff `, (err2, results2) => {
+      var staff = [];
+      for (var i = 0; i < results2.rows.length; i++) {
+        staff_person = {
+          staff_id: results2.rows[i].staff_id,
+          staff_name: results2.rows[i].staff_name,
+          gender : results2.rows[i].gender,
+          salary : results2.rows[i].salary,
+          job_role : results2.rows[i].job_role,
+          hostel_id : results2.rows[i].hostel_id,
+          contact_number: results2.rows[i].contact_number
+        }
+        staff.push(staff_person);
+      }
+      console.log("view staff  called for staff object passed = ", staff);
+      res.render("staffViewAdmin", { user: admin, staff: staff});
+    })
+
+  })
+ 
+})
 module.exports = router;

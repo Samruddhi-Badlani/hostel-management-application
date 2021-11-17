@@ -1,0 +1,53 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <div class="row p-2">
+        <div class="col-1">Staff ID</div>
+        <div class="col-2">Staff Name</div>
+        <div class="col-2">Contact Number</div>
+        <div class="col-2">Gender</div>
+        <div class="col-2">Salary</div>
+        <div class="col-2">Job Role</div>
+        <div class="col-1">Hostel ID</div>
+        
+        </div>
+
+        <% for(var i=0 ; i < staff.length ; i++){ %>
+            <div class="row p-2">
+            
+                
+                    <div class="col-1">
+                        <%= staff[i].staff_id %>
+                    </div>
+                    <div class="col-2">
+                        <%= staff[i].staff_name %>
+                    </div>
+                    <div class="col-2">
+                        <%= staff[i].contact_number %>
+                    </div>
+                    <div class="col-2">
+                        <%= staff[i].gender %>
+                    </div>
+                    <div class="col-2">
+                        <%= staff[i].salary %>
+                    </div>
+                    <div class="col-2">
+                        <%= staff[i].job_role %>
+                    </div>
+                    <div class="col-1">
+                        <%= staff[i].hostel_id %>
+                    </div>
+             
+           
+            </div>
+
+            <% } %>
+            
+</body>
+</html>
