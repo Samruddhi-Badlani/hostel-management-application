@@ -531,13 +531,69 @@ router.post("/students/hostelStudent", (req, res) => {
         hostel = {
           id: results2.rows[i].hostel_id,
           name: results2.rows[i].hostel_name,
-          no_of_rooms: results2.rows[i].no_of_rooms
+          no_of_rooms: results2.rows[i].no_of_rooms,
+          type : results2.rows[i].type
         }
         hostels.push(hostel);
       }
       console.log("Profile called student object passed = ", student);
       res.render("hostelStudent", { user: student, hostels: hostels });
     })
+
+  })
+})
+
+router.post("/students/applyForRoom", (req, res) => {
+  var studentID = req.user.id;
+  pool.query(`SELECT * FROM student WHERE user_id = $1`, [studentID], (error1, results1) => {
+    console.log(results1.rows);
+    student = {
+      id: results1.rows[0].student_id,
+      name: results1.rows[0].fname,
+      phone: results1.rows[0].phone_no,
+      gender: results1.rows[0].gender
+    }
+
+    
+      console.log("Apply for room called student object passed = ", student);
+      res.render("roomApply", { user: student});
+  
+
+  })
+})
+router.post("/students/applyForNonIsolatedRoom", (req, res) => {
+  var studentID = req.user.id;
+  pool.query(`SELECT * FROM student WHERE user_id = $1`, [studentID], (error1, results1) => {
+    console.log(results1.rows);
+    student = {
+      id: results1.rows[0].student_id,
+      name: results1.rows[0].fname,
+      phone: results1.rows[0].phone_no,
+      gender: results1.rows[0].gender
+    }
+
+    
+      console.log("Apply for roomnon isolated called student object passed = ", student);
+      res.render("roomNonIsolatedApply", { user: student});
+  
+
+  })
+})
+router.post("/students/applyForIsolatedRoom", (req, res) => {
+  var studentID = req.user.id;
+  pool.query(`SELECT * FROM student WHERE user_id = $1`, [studentID], (error1, results1) => {
+    console.log(results1.rows);
+    student = {
+      id: results1.rows[0].student_id,
+      name: results1.rows[0].fname,
+      phone: results1.rows[0].phone_no,
+      gender: results1.rows[0].gender
+    }
+
+    
+      console.log("Apply for room isolated called student object passed = ", student);
+      res.render("roomIsolatedApply", { user: student});
+  
 
   })
 })
@@ -549,6 +605,7 @@ router.post("/admins/hostelStudent", (req, res) => {
       id: results1.rows[0].admin_id,
       name: results1.rows[0].fname + results1.rows[0].lname,
       phone: results1.rows[0].phone_no,
+      
 
     }
 
@@ -558,7 +615,8 @@ router.post("/admins/hostelStudent", (req, res) => {
         hostel = {
           id: results2.rows[i].hostel_id,
           name: results2.rows[i].hostel_name,
-          no_of_rooms: results2.rows[i].no_of_rooms
+          no_of_rooms: results2.rows[i].no_of_rooms,
+          type : results2.rows[i].type
         }
         hostels.push(hostel);
       }
@@ -589,10 +647,11 @@ router.post("/admins/addHostelByAdmin", (req, res) => {
     phone: req.body.myHostelPhone,
     rooms: req.body.myHostelRooms,
     admin_id: req.body.myUserId,
-    hostel_id: req.body.myHostelID
+    hostel_id: req.body.myHostelID,
+    type : req.body.myHostelType
   }
-  pool.query(`INSERT INTO hostel(hostel_name,phone_no,no_of_rooms,admin_id,hostel_id) VALUES ($1,$2,$3,$4,$5)`,
-    [hostel.name, hostel.phone, hostel.rooms, hostel.admin_id, hostel.hostel_id], (err1, results1) => {
+  pool.query(`INSERT INTO hostel(hostel_name,phone_no,no_of_rooms,admin_id,hostel_id,type) VALUES ($1,$2,$3,$4,$5,$6)`,
+    [hostel.name, hostel.phone, hostel.rooms, hostel.admin_id, hostel.hostel_id,hostel.type], (err1, results1) => {
       if (err1) {
         console.log(err1);
       }

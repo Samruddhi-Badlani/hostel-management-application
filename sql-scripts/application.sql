@@ -10,6 +10,8 @@ CREATE TABLE application (
   ON UPDATE CASCADE,
   FOREIGN KEY (room_no) 
   REFERENCES room(room_id)
+  ON DELETE SET NULL
+  ON UPDATE CASCADE
  
 );
 

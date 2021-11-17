@@ -142,3 +142,14 @@ CREATE SEQUENCE my_serial AS integer START 1 OWNED BY hostel.hostel_id;
 
 ALTER TABLE hostel ALTER COLUMN hostel_id SET DEFAULT nextval('my_serial');
 
+ALTER TABLE student
+ADD COLUMN user_id INTEGER;
+
+ALTER TABLE administrator
+ADD COLUMN user_id INTEGER;
+
+ALTER TABLE hostel
+ADD COLUMN type VARCHAR(30);
+
+
+
