@@ -5,7 +5,10 @@ const pool = require("../db");
 const bcrypt = require("bcrypt");
 const session = require("express-session");
 const flash = require("express-flash");
+var path = require("path")
+var formidable = require('formidable');
 const initializePassport = require("../passportConfig");
+
 
 initializePassport(passport);
 
@@ -519,7 +522,7 @@ router.post("/feedback", checkNotAuthenticated, (req, res) => {
 });
 
 
-router.post("/students/hostelStudent", (req, res) => {
+router.post("/students/hostelStudent",checkNotAuthenticated, (req, res) => {
   var studentID = req.user.id;
   pool.query(`SELECT * FROM student WHERE user_id = $1`, [studentID], (error1, results1) => {
     console.log(results1.rows);
@@ -549,7 +552,7 @@ router.post("/students/hostelStudent", (req, res) => {
   })
 })
 
-router.post("/students/applyForRoom", (req, res) => {
+router.post("/students/applyForRoom", checkNotAuthenticated,(req, res) => {
   var studentID = req.user.id;
   pool.query(`SELECT * FROM student WHERE user_id = $1`, [studentID], (error1, results1) => {
     console.log(results1.rows);
@@ -568,7 +571,7 @@ router.post("/students/applyForRoom", (req, res) => {
   })
 })
 
-router.post("/students/applyForNonIsolatedRoom", (req, res) => {
+router.post("/students/applyForNonIsolatedRoom", checkNotAuthenticated,(req, res) => {
   var studentID = req.user.id;
   pool.query(`SELECT * FROM student WHERE user_id = $1`, [studentID], (error1, results1) => {
     console.log(results1.rows);
@@ -604,7 +607,7 @@ router.post("/students/applyForNonIsolatedRoom", (req, res) => {
 
   })
 })
-router.post("/students/applyForIsolatedRoom", (req, res) => {
+router.post("/students/applyForIsolatedRoom",checkNotAuthenticated, (req, res) => {
   var studentID = req.user.id;
   pool.query(`SELECT * FROM student WHERE user_id = $1`, [studentID], (error1, results1) => {
     console.log(results1.rows);
@@ -683,7 +686,7 @@ router.post("/admins/addHostel", (req, res) => {
     res.render("addHostel", { user: admin, my_null_value: req.user.xyz });
   })
 })
-router.post("/admins/addHostelByAdmin", (req, res) => {
+router.post("/admins/addHostelByAdmin",checkNotAuthenticated, (req, res) => {
   console.log(req.isAuthenticated());
 
   var hostel = {
@@ -720,7 +723,7 @@ router.post("/admins/addStaff", (req, res) => {
 })
 
 
-router.post("/admins/addStaffByAdmin", (req, res) => {
+router.post("/admins/addStaffByAdmin", checkNotAuthenticated,(req, res) => {
   console.log(req.isAuthenticated());
   console.log("Admin is adding a staff member here!!")
   var staff = {
@@ -746,7 +749,7 @@ router.post("/admins/addStaffByAdmin", (req, res) => {
     })
 })
 
-router.post("/admins/staffAdmin", (req, res) => {
+router.post("/admins/staffAdmin",checkNotAuthenticated, (req, res) => {
   var adminID = req.user.id;
   pool.query(`SELECT * FROM administrator WHERE user_id = $1`, [adminID], (error1, results1) => {
     console.log(results1.rows);
@@ -757,7 +760,7 @@ router.post("/admins/staffAdmin", (req, res) => {
 
     }
 
-    pool.query(`SELECT * FROM staff `, (err2, results2) => {
+    pool.query(`SELECT * FROM staff `, checkNotAuthenticated,(err2, results2) => {
       var staff = [];
       for (var i = 0; i < results2.rows.length; i++) {
         staff_person = {
@@ -779,7 +782,7 @@ router.post("/admins/staffAdmin", (req, res) => {
 
 })
 
-router.post("/students/applyRoomSubmitBoth", (req, res) => {
+router.post("/students/applyRoomSubmitBoth",checkNotAuthenticated, (req, res) => {
   var student_id = req.body.myUserId;
   var room_id = req.body.room_id
   pool.query(`INSERT INTO application(room_no,student_id) VALUES ($1,$2)`, [room_id, student_id], (err1, results1) => {
@@ -795,7 +798,7 @@ router.post("/students/applyRoomSubmitBoth", (req, res) => {
 
 })
 
-router.get('/admins/notification',(req,res)=>{
+router.get('/admins/notification',checkNotAuthenticated,(req,res)=>{
   console.log(req.isAuthenticated());
   pool.query(`SELECT * FROM administrator where user_id=$1`, [req.user.id], (err, results) => {
     var admin = {
@@ -812,5 +815,45 @@ router.get('/admins/notification',(req,res)=>{
   })
 
 
+})
+
+router.post("/students/updateVaccineCertificate",checkNotAuthenticated,(req,res)=>{
+  pool.query("SELECT hostel_id,hostel_name FROM hostel", (err, result) => {
+    var hostels = [];
+    for (i = 0; i < result.rows.length; i++) {
+      var hostel = {
+        hostel_id: result.rows[i].hostel_id,
+        hostel_name: result.rows[i].hostel_name
+      }
+      hostels.push(hostel);
+    }
+    const studentID = req.user.id;
+    console.log(studentID, " is studnet id");
+    var student;
+    pool.query(`SELECT * FROM student WHERE user_id = $1`, [studentID], (error1, results1) => {
+      console.log(results1.rows);
+      student = {
+        id: results1.rows[0].student_id,
+        name: results1.rows[0].fname,
+        phone: results1.rows[0].phone_no,
+        gender: results1.rows[0].gender
+      }
+      console.log("Student dashboard called student object passed= ", student);
+      res.render("vaccineUpload", { user: student, my_null_value: req.user.xyz, hostels: hostels, profileView: false });
+    })
+  })
+})
+
+router.post("/students/uploadVaccineCertificate",checkNotAuthenticated,(req,res)=>{
+
+  
+  if(req.files){
+    console.log(req.files);
+  }
+  else{
+    console.log("file not found but !!")
+  }
+  console.log("File uploads here")
+  res.redirect("/users/students/dashboard");
 })
 module.exports = router;

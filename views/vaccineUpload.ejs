@@ -66,7 +66,7 @@
           </form>
         </div>
         <div id="logHead">
-       
+        
        
          
         <a href="/users/students/logout"  class="logHeadItem">Logout</a>
@@ -98,49 +98,34 @@
         <input type='hidden' name='myUserCapacity' value = '<%= user.capacity %>' >
       
     </form>
-
     <form action="/users/students/applyForRoom" method="POST" class="logHeadItem" >
-        <input  type='hidden'   name='myUserId' value='<%=user.id %>'>
-        <input  type='hidden' name='myUserName' value = '<%= user.name %>' >
-        <input type='hidden' name='myUserEmail' value = '<%= user.email %>' >
-        <input type='hidden' name='myUserPhone' value = '<%= user.phone %>' >
-        <input type='hidden' name='myUserCity' value = '<%= user.city %>' >
-        <input type='hidden' name='myUserState' value = '<%= user.state %>' >
-        <input type='hidden' name='myUserCountry' value = '<%= user.country %>' > 
-        <input type='hidden' name='myUserAddress' value='<%= user.address %>' > 
-        <input type='hidden' name='myUserJobRole' value = '<%= user.job_role %>' >
-        <input type='hidden' name='myUserCost' value = '<%= user.cost %>' >
-        <input type='hidden' name='myUserCapacity' value = '<%= user.capacity %>' >
-      
-    </form>
-    <form action="/users/students/applyForIsolatedRoom" method="POST" class="logHeadItem" >
-        <input  type='hidden'   name='myUserId' value='<%=user.id %>'>
-        <input  type='hidden' name='myUserName' value = '<%= user.name %>' >
-        <input type='hidden' name='myUserEmail' value = '<%= user.email %>' >
-        <input type='hidden' name='myUserPhone' value = '<%= user.phone %>' >
-        <input type='hidden' name='myUserCity' value = '<%= user.city %>' >
-        <input type='hidden' name='myUserState' value = '<%= user.state %>' >
-        <input type='hidden' name='myUserCountry' value = '<%= user.country %>' > 
-        <input type='hidden' name='myUserAddress' value='<%= user.address %>' > 
-        <input type='hidden' name='myUserJobRole' value = '<%= user.job_role %>' >
-        <input type='hidden' name='myUserCost' value = '<%= user.cost %>' >
-        <input type='hidden' name='myUserCapacity' value = '<%= user.capacity %>' >
-      
-    </form>
-    <form action="/users/students/applyForNonIsolatedRoom" method="POST" class="logHeadItem" >
-        <input  type='hidden'   name='myUserId' value='<%=user.id %>'>
-        <input  type='hidden' name='myUserName' value = '<%= user.name %>' >
-        <input type='hidden' name='myUserEmail' value = '<%= user.email %>' >
-        <input type='hidden' name='myUserPhone' value = '<%= user.phone %>' >
-        <input type='hidden' name='myUserCity' value = '<%= user.city %>' >
-        <input type='hidden' name='myUserState' value = '<%= user.state %>' >
-        <input type='hidden' name='myUserCountry' value = '<%= user.country %>' > 
-        <input type='hidden' name='myUserAddress' value='<%= user.address %>' > 
-        <input type='hidden' name='myUserJobRole' value = '<%= user.job_role %>' >
-        <input type='hidden' name='myUserCost' value = '<%= user.cost %>' >
-        <input type='hidden' name='myUserCapacity' value = '<%= user.capacity %>' >
-      
-    </form>
+      <input  type='hidden'   name='myUserId' value='<%=user.id %>'>
+      <input  type='hidden' name='myUserName' value = '<%= user.name %>' >
+      <input type='hidden' name='myUserEmail' value = '<%= user.email %>' >
+      <input type='hidden' name='myUserPhone' value = '<%= user.phone %>' >
+      <input type='hidden' name='myUserCity' value = '<%= user.city %>' >
+      <input type='hidden' name='myUserState' value = '<%= user.state %>' >
+      <input type='hidden' name='myUserCountry' value = '<%= user.country %>' > 
+      <input type='hidden' name='myUserAddress' value='<%= user.address %>' > 
+      <input type='hidden' name='myUserJobRole' value = '<%= user.job_role %>' >
+      <input type='hidden' name='myUserCost' value = '<%= user.cost %>' >
+      <input type='hidden' name='myUserCapacity' value = '<%= user.capacity %>' >
+    
+  </form>
+  <form action="/users/students/updateVaccineCertificat" method="POST" class="logHeadItem" >
+    <input  type='hidden'   name='myUserId' value='<%=user.id %>'>
+    <input  type='hidden' name='myUserName' value = '<%= user.name %>' >
+    <input type='hidden' name='myUserEmail' value = '<%= user.email %>' >
+    <input type='hidden' name='myUserPhone' value = '<%= user.phone %>' >
+    <input type='hidden' name='myUserCity' value = '<%= user.city %>' >
+    <input type='hidden' name='myUserState' value = '<%= user.state %>' >
+    <input type='hidden' name='myUserCountry' value = '<%= user.country %>' > 
+    <input type='hidden' name='myUserAddress' value='<%= user.address %>' > 
+    <input type='hidden' name='myUserJobRole' value = '<%= user.job_role %>' >
+    <input type='hidden' name='myUserCost' value = '<%= user.cost %>' >
+    <input type='hidden' name='myUserCapacity' value = '<%= user.capacity %>' >
+  
+</form>
     </nav>
     <div class="container">
       <div class="row pt-4 pl-4 pr-4">
@@ -149,6 +134,31 @@
         </div>
       </div>
       <hr class="mt-0">
+
+      <ul>
+        <% if (typeof errors != 'undefined') { %> <% errors.forEach(error => { %>
+        <li><%= error.message %></li>
+        <% }) %> <% } %>
+      </ul>
+  
+      <ul>
+        <% if(typeof messages != 'undefined') { %>
+        <% if(messages.success_msg) { %>
+        <li><%= messages.success_msg %></li>
+        <% } %>
+        <% if(messages.message) { %>
+          <li><%= messages.message %></li>
+          <% } %>
+        <% } %>
+      </ul>
+  
+      <ul>
+       
+        <% if (messages.error) { %>
+        <li><%= messages.error %></li>
+        <% } %>
+      
+      </ul>
       
       <div class="row p-4">
         <div class="col-3">
@@ -164,24 +174,16 @@
       <form action="/users/students/applyForRoom" method="post">
         <input type="submit" id="applyRoom" class="btn text-white btn-primary col-12" value="Apply for a room"></button><br/><br/>
     </form>
-         
+
     <form action="/users/students/updateVaccineCertificate" method="post">
       <input type="submit" id="vaccine" class="btn text-white btn-primary col-12" value="Update Vaccination Information"></button><br/><br/>
   </form>
+         
           
           <!--<button id="viewApplicationStatus" class="btn text-white btn-primary col-12">View Application Status</button><br/><br/>-->
         </div>
         <div class="col-9">
-          <div id="noticeBoard" class="border p-5 bg-light">
-            <form action="/users/students/applyForIsolatedRoom" method="post">
-                <input type="submit" id="applyIsolRoom" class="btn text-white btn-primary col-4" value="Apply for a Isolated room"></button><br/><br/>
-            </form>
-
-            <form action="/users/students/applyForNonIsolatedRoom" method="post">
-                <input type="submit" id="applyNonIsolRoom" class="btn text-white btn-primary col-4" value="Apply for a Non Isolated room"></button><br/><br/>
-            </form>
-          
-          </div>
+            <%- include('vaccineUploadPartial') %>
         </div>
         
         

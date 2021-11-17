@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <form action="/users/students/uploadVaccineCertificate" method="post" enctype="multipart/form-data">
+        <input  type='hidden'   name='myUserId' value='<%=user.id %>'>
+        <div class="myInputBox">
+            <label class="labelFields" for="myCertificateID">Certificate ID</label>
+            <input class="inputFields" type="number" name="myCertificateID" id="myCertificateID" required>
+            </div>
+        <div class="myInputBox">
+        <label class="labelFields" for="myHostelName">Level ( first or second dose)</label>
+        <input class="inputFields" type="text" name="myCertificateLevel" id="myCertificateLevel" required>
+        </div>
+        <div class="myInputBox">
+        <label class="labelFields" for="myHostelPhone">Certificate file </label>
+        <input class="inputFields" type="file" name="myCertificateFile" id="myCertificateFile"   required>
+        </div>
+        
+        <div class="myInputBox">
+        <input type="submit" class="inputFields" value="Add" id="submitHostel">
+        </div>
+    </form>
+</body>
+</html>
