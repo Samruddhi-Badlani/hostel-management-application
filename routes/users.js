@@ -845,15 +845,32 @@ router.post("/students/updateVaccineCertificate",checkNotAuthenticated,(req,res)
 })
 
 router.post("/students/uploadVaccineCertificate",checkNotAuthenticated,(req,res)=>{
-
-  
-  if(req.files){
+  const vaccination_certificate = {
+    certificate_id : req.body.myCertificateID,
+    level : req.body.myCertificateLevel
+  }
+  console.log("Student id here is ",req.body.myUserId);
+    if(req.files){
     console.log(req.files);
+    const file = req.files.myCertificateFile;
+    pool.query(`INSERT INTO vaccination_certificate(certificate_id,level,certificate_file)
+    VALUES ($1,$2,$3)`,[vaccination_certificate.certificate_id,vaccination_certificate.level,file],(err1,results1)=>{
+      pool
+      if(err1){
+        console.log(err1);
+      }
+      pool.query(`UPDATE student SET certificate_id = $1 WHERE student_id=$2`,[vaccination_certificate.certificate_id,req.body.myUserId],(err2,results2)=>{
+        console.log("File uploads here")
+        req.flash("success_msg","Your certificate uploaded successfully");
+             
+  res.redirect("/users/students/dashboard");
+      })
+
+    })
   }
   else{
     console.log("file not found but !!")
   }
-  console.log("File uploads here")
-  res.redirect("/users/students/dashboard");
+  
 })
 module.exports = router;
