@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+
+<body>
+    <div class="row p-2">
+        <div class="col-2">Room ID</div>
+        <div class="col-2">Rent Amount</div>
+        <div class="col-2">Capacity</div>
+        <div class="col-2">Type</div>
+        <div class="col-2">Hostel ID</div>
+    </div>
+
+    <% for(var i=0 ; i < rooms.length ; i++){ %>
+        <div class="row p-2">
+
+
+            <div class="col-2">
+                <%= rooms[i].room_id %>
+            </div>
+            <div class="col-2">
+                <%= rooms[i].rent_amount %>
+            </div>
+            <div class="col-2">
+                <%= rooms[i].capacity %>
+            </div>
+            <div class="col-2">
+                <%= rooms[i].room_type %>
+            </div>
+            <div class="col-2">
+                <%= rooms[i].hostel_id %>
+            </div>
+
+
+
+        </div>
+
+        <% } %>
+
+
+
+            <form action="/users/students/applyRoomSubmitBoth" method="post">
+                <input  type='hidden'   name='myUserId' value='<%=user.id %>'>
+                <label class="btn col-3" for="room_id">Choose a Room:</label>
+                <select class="btn col-3" id="room_id" name="room_id">
+                    
+    <% for(var i=0 ; i < rooms.length ; i++){ %>
+                    <option class="btn text-white btn-primary col-3" value=' <%= rooms[i].room_id %>'> <div class="col-2">
+                        <%= rooms[i].room_id %>
+                    </div></option>
+
+                    <% } %>
+
+                    
+                </select>
+                <input type="submit" id="applyIsolRoom" class="btn text-white btn-primary col-3"
+                    value="Apply Now"></button><br /><br />
+            </form>
+
+</body>
+
+</html>

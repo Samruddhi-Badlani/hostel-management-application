@@ -8,24 +8,33 @@
 </head>
 <body>
     <div class="row p-2">
-        <div class="col-4">Hostel ID</div>
-        <div class="col-4">Hostel Name</div>
-        <div class="col-4">Number of rooms</div>
+        <div class="col-2">Hostel ID</div>
+        <div class="col-2">Hostel Name</div>
+        <div class="col-2">Number of rooms</div>
+        <div class="col-2">Type</div>
+        <div class="col-2">Phone</div>
         </div>
 
         <% for(var i=0 ; i < hostels.length ; i++){ %>
             <div class="row p-2">
             
                 
-                    <div class="col-4">
+                    <div class="col-2">
                         <%= hostels[i].id %>
                     </div>
-                    <div class="col-4">
+                    <div class="col-2">
                         <%= hostels[i].name %>
                     </div>
-                    <div class="col-4">
+                    <div class="col-2">
                         <%= hostels[i].no_of_rooms %>
                     </div>
+                    <div class="col-2">
+                        <%= hostels[i].type %>
+                    </div>
+                    <div class="col-2">
+                        <%= hostels[i].phone %>
+                    </div>
+             
              
            
             </div>

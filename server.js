@@ -4,8 +4,10 @@ const flash = require('express-flash')
 const passport = require("passport");
 const session = require("express-session");
 require("dotenv").config();
+var path = require("path")
 const bcrypt = require("bcrypt")
 const initializePassport = require("./passportConfig");
+const upload = require('express-fileupload');
 
 initializePassport(passport);
 
@@ -13,6 +15,7 @@ const users = require("./routes/users");
 const pool = require("./db");
 app.use(express.urlencoded({ extended: false }));
 app.set("view engine","ejs");
+
 app.use(
     session({
       // Key we want to keep secret which will encrypt all of our information
@@ -30,7 +33,9 @@ app.use(
   app.use(passport.session());
   app.use(flash());
 
-  
+  app.use(upload())
+
+
 
 app.get("/", (req, res) => {
   res.render("index");

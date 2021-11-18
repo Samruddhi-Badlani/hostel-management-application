@@ -49,7 +49,7 @@
                 </form>
             </div>
             <div id="logHead">
-                <a href="/users/contactlist" class="logHeadItem">contact list</a>
+               
 
 
                 <a href="/users/students/logout" class="logHeadItem">Logout</a>
@@ -67,6 +67,35 @@
                     <input type='hidden' name='myUserCapacity' value='<%= user.capacity %>'>
                     <input type="image" class="myProfileImage" src="/css/images/profile-img.png" alt="Submit"
                         style="float: right;">
+                </form>
+
+                <form action="/users/students/applyForRoom" method="POST" class="logHeadItem" >
+                    <input  type='hidden'   name='myUserId' value='<%=user.id %>'>
+                    <input  type='hidden' name='myUserName' value = '<%= user.name %>' >
+                    <input type='hidden' name='myUserEmail' value = '<%= user.email %>' >
+                    <input type='hidden' name='myUserPhone' value = '<%= user.phone %>' >
+                    <input type='hidden' name='myUserCity' value = '<%= user.city %>' >
+                    <input type='hidden' name='myUserState' value = '<%= user.state %>' >
+                    <input type='hidden' name='myUserCountry' value = '<%= user.country %>' > 
+                    <input type='hidden' name='myUserAddress' value='<%= user.address %>' > 
+                    <input type='hidden' name='myUserJobRole' value = '<%= user.job_role %>' >
+                    <input type='hidden' name='myUserCost' value = '<%= user.cost %>' >
+                    <input type='hidden' name='myUserCapacity' value = '<%= user.capacity %>' >
+                  
+                </form>
+                <form action="/users/students/updateVaccineCertificat" method="POST" class="logHeadItem" >
+                    <input  type='hidden'   name='myUserId' value='<%=user.id %>'>
+                    <input  type='hidden' name='myUserName' value = '<%= user.name %>' >
+                    <input type='hidden' name='myUserEmail' value = '<%= user.email %>' >
+                    <input type='hidden' name='myUserPhone' value = '<%= user.phone %>' >
+                    <input type='hidden' name='myUserCity' value = '<%= user.city %>' >
+                    <input type='hidden' name='myUserState' value = '<%= user.state %>' >
+                    <input type='hidden' name='myUserCountry' value = '<%= user.country %>' > 
+                    <input type='hidden' name='myUserAddress' value='<%= user.address %>' > 
+                    <input type='hidden' name='myUserJobRole' value = '<%= user.job_role %>' >
+                    <input type='hidden' name='myUserCost' value = '<%= user.cost %>' >
+                    <input type='hidden' name='myUserCapacity' value = '<%= user.capacity %>' >
+                  
                 </form>
     </nav>
     <div class="row pt-4 pl-4 pr-4">
@@ -92,29 +121,43 @@
                     <input type="submit" id="showHostels" class="btn text-white btn-primary col-12"
                         value="View Hostel Information"></button><br /><br />
                 </form>
-                
+                <form action="/users/students/applyForRoom" method="post">
+                    <input type="submit" id="applyRoom" class="btn text-white btn-primary col-12" value="Apply for a room"></button><br/><br/>
+                </form>
+
+                <form action="/users/students/updateVaccineCertificate" method="post">
+                    <input type="submit" id="vaccine" class="btn text-white btn-primary col-12" value="Update Vaccination Information"></button><br/><br/>
+                </form>
                 <!--<button id="viewApplicationStatus" class="btn text-white btn-primary col-12">View Application Status</button><br/><br/>-->
             </div>
             <div class="col-9">
 
                 <div class="row p-2">
-                    <div class="col-4">Hostel ID</div>
-                    <div class="col-4">Hostel Name</div>
-                    <div class="col-4">Number of rooms</div>
+                    <div class="col-2">Hostel ID</div>
+                    <div class="col-2">Hostel Name</div>
+                    <div class="col-2">Number of rooms</div>
+                    <div class="col-2">Type</div>
+                    <div class="col-2">Phone</div>
                     </div>
 
                     <% for(var i=0 ; i < hostels.length ; i++){ %>
                         <div class="row p-2">
                         
                             
-                                <div class="col-4">
+                                <div class="col-2">
                                     <%= hostels[i].id %>
                                 </div>
-                                <div class="col-4">
+                                <div class="col-2">
                                     <%= hostels[i].name %>
                                 </div>
-                                <div class="col-4">
+                                <div class="col-2">
                                     <%= hostels[i].no_of_rooms %>
+                                </div>
+                                <div class="col-2">
+                                    <%= hostels[i].type %>
+                                </div>
+                                <div class="col-2">
+                                    <%= hostels[i].phone %>
                                 </div>
                          
                        
